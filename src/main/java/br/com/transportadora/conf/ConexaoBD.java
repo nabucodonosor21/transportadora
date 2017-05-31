@@ -9,7 +9,6 @@ public class ConexaoBD {
 	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/database_name";
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "";
-	private static final String MAX_POOL = "250"; // set your own limit
 	
 	private Connection connection;
 	
@@ -17,7 +16,7 @@ public class ConexaoBD {
 	    if (connection == null) {
 	        try {
 	            Class.forName(DATABASE_DRIVER);
-	            connection = DriverManager.getConnection(DATABASE_URL);
+	            connection = DriverManager.getConnection(DATABASE_URL,USERNAME,PASSWORD);
 	        }catch (Exception e) {
 	        	
 			}
