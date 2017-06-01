@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -44,79 +45,70 @@
          </children>
       </Pane>
    </top>
-   <left>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
-         <children>
-            <Button id="btn_inicio" layoutX="54.0" layoutY="62.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Início" />
-            <Label layoutX="14.0" layoutY="14.0" text="Menu" textFill="#676767">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Separator layoutX="197.0" orientation="VERTICAL" prefHeight="360.0" prefWidth="4.0" />
-            <Separator layoutY="362.0" prefHeight="0.0" prefWidth="860.0" />
-            <Button id="btn_cliente" layoutX="54.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cliente" />
-            <Button id="btn_veiculo" layoutX="55.0" layoutY="139.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Veículo" />
-            <Button id="btn_servico" layoutX="55.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Serviço" />
-            <Button id="btn_sair" layoutX="55.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Sair" />
-         </children>
-      </Pane>
-   </left>
-   <right>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
-         <children>
-            <Button id="btn_salvar" layoutX="102.0" layoutY="317.0" mnemonicParsing="false" prefWidth="73.0" text="Salvar" />
-            <Button id="btn_atualizar" layoutX="14.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Atualizar" />
-         </children>
-      </Pane>
-   </right>
    <center>
-      <Pane prefHeight="332.0" prefWidth="460.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+      <AnchorPane>
          <children>
-            <Label layoutX="180.0" layoutY="41.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nome" />
-            <Label layoutX="168.0" layoutY="93.0" prefHeight="17.0" prefWidth="43.0" style="-fx-background-color: #FFFFFF;" text="DDD" />
-            <TextField id="txt_nome" layoutX="166.0" layoutY="58.0" prefHeight="25.0" prefWidth="202.0" />
-            <Separator layoutX="-1.0" layoutY="363.0" prefHeight="0.0" prefWidth="658.0" />
-            <Label layoutX="22.0" layoutY="41.0" prefHeight="17.0" prefWidth="43.0" style="-fx-background-color: #FFFFFF;" text="CPF" />
-            <TextField id="txt_cpf" layoutX="22.0" layoutY="58.0" prefHeight="25.0" prefWidth="130.0" />
-            <TextField id="txt_ddd" layoutX="168.0" layoutY="110.0" prefHeight="25.0" prefWidth="31.0" />
-            <Label layoutX="208.0" layoutY="93.0" prefHeight="17.0" prefWidth="57.0" style="-fx-background-color: #FFFFFF;" text="Telefone" />
-            <TextField id="txt_telefone" layoutX="208.0" layoutY="110.0" prefHeight="25.0" prefWidth="122.0" />
-            <Label layoutX="19.0" layoutY="97.0" prefHeight="17.0" prefWidth="117.0" style="-fx-background-color: #FFFFFF;" text="Data de Nascimento" />
-            <TextField id="txt_data_nas" layoutX="19.0" layoutY="114.0" prefHeight="25.0" prefWidth="135.0" />
-            <TextField id="txt_sobrenome" layoutX="381.0" layoutY="58.0" prefHeight="25.0" prefWidth="257.0" />
-            <Label layoutX="385.0" layoutY="41.0" prefHeight="12.0" prefWidth="74.0" style="-fx-background-color: #FFFFFF;" text="Sobrenome" />
-            <Label layoutX="17.0" layoutY="162.0" text="Endereço" textFill="#676767">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="14.0" layoutY="7.0" text="Dados do Funcionário" textFill="#676767">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Separator layoutX="16.0" layoutY="152.0" prefHeight="4.0" prefWidth="621.0" />
-            <Label layoutX="19.0" layoutY="196.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="UF" />
-            <ChoiceBox id="combo_uf" layoutX="19.0" layoutY="213.0" prefHeight="25.0" prefWidth="79.0" />
-            <Label layoutX="118.0" layoutY="196.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Cidade" />
-            <ChoiceBox id="combo_cidade" layoutX="116.0" layoutY="213.0" prefHeight="25.0" prefWidth="168.0" />
-            <Label layoutX="310.0" layoutY="196.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="CEP" />
-            <TextField id="txt_cep" layoutX="307.0" layoutY="213.0" prefHeight="25.0" prefWidth="135.0" />
-            <Label layoutX="22.0" layoutY="251.0" prefHeight="17.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Logradouro" />
-            <TextField id="txt_logradouro" layoutX="19.0" layoutY="268.0" prefHeight="25.0" prefWidth="135.0" />
-            <Label layoutX="172.0" layoutY="247.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nº" />
-            <TextField id="txt_num" layoutX="169.0" layoutY="268.0" prefHeight="25.0" prefWidth="44.0" />
-            <Label layoutX="230.0" layoutY="251.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Bairro" />
-            <TextField id="txt_bairro" layoutX="229.0" layoutY="268.0" prefHeight="25.0" prefWidth="135.0" />
-            <Label layoutX="380.0" layoutY="251.0" prefHeight="17.0" prefWidth="83.0" style="-fx-background-color: #FFFFFF;" text="Complemento" />
-            <TextField id="txt_complemento" layoutX="379.0" layoutY="268.0" prefHeight="25.0" prefWidth="255.0" />
-            <Button id="btn_consultar" layoutX="301.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Consultar" />
-            <Button id="btn_excluir" layoutX="388.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Excluir" />
-            <Button id="btn_limpar" layoutX="18.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Limpar" />
-            <TextField id="txt_cargo" layoutX="346.0" layoutY="110.0" prefHeight="25.0" prefWidth="151.0" />
-            <Label layoutX="346.0" layoutY="93.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Cargo" />
+            <AnchorPane>
+               <children>
+                  <Label layoutX="550.0" layoutY="99.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Cargo" />
+                  <Label layoutX="384.0" layoutY="47.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nome" />
+                  <TextField id="txt_bairro" layoutX="433.0" layoutY="274.0" prefHeight="25.0" prefWidth="135.0" />
+                  <Button id="btn_consultar" layoutX="517.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Consultar" />
+                  <Separator layoutX="223.0" layoutY="151.0" prefHeight="0.0" prefWidth="616.0" />
+                  <ChoiceBox id="combo_cidade" layoutX="320.0" layoutY="219.0" prefHeight="25.0" prefWidth="168.0" />
+                  <Label layoutX="589.0" layoutY="47.0" prefHeight="12.0" prefWidth="74.0" style="-fx-background-color: #FFFFFF;" text="Sobrenome" />
+                  <Label layoutX="218.0" layoutY="13.0" text="Dados do Funcionário" textFill="#676767">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Separator layoutY="363.0" prefHeight="3.0" prefWidth="840.0" />
+                  <Label layoutX="372.0" layoutY="99.0" prefHeight="17.0" prefWidth="43.0" style="-fx-background-color: #FFFFFF;" text="DDD" />
+                  <TextField id="txt_cpf" layoutX="226.0" layoutY="64.0" prefHeight="25.0" prefWidth="130.0" />
+                  <TextField id="txt_data_nas" layoutX="223.0" layoutY="120.0" prefHeight="25.0" prefWidth="135.0" />
+                  <Label layoutX="226.0" layoutY="47.0" prefHeight="17.0" prefWidth="43.0" style="-fx-background-color: #FFFFFF;" text="CPF" />
+                  <Button id="btn_limpar" layoutX="218.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Limpar" />
+                  <TextField id="txt_telefone" layoutX="412.0" layoutY="116.0" prefHeight="25.0" prefWidth="122.0" />
+                  <Label layoutX="376.0" layoutY="253.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nº" />
+                  <TextField id="txt_num" layoutX="373.0" layoutY="274.0" prefHeight="25.0" prefWidth="44.0" />
+                  <TextField id="txt_sobrenome" layoutX="585.0" layoutY="64.0" prefHeight="25.0" prefWidth="257.0" />
+                  <TextField id="txt_nome" layoutX="370.0" layoutY="64.0" prefHeight="25.0" prefWidth="202.0" />
+                  <TextField id="txt_cargo" layoutX="550.0" layoutY="116.0" prefHeight="25.0" prefWidth="151.0" />
+                  <Label layoutX="584.0" layoutY="257.0" prefHeight="17.0" prefWidth="83.0" style="-fx-background-color: #FFFFFF;" text="Complemento" />
+                  <ChoiceBox id="combo_uf" layoutX="223.0" layoutY="219.0" prefHeight="25.0" prefWidth="79.0" />
+                  <Label layoutX="221.0" layoutY="168.0" text="Endereço" textFill="#676767">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="226.0" layoutY="257.0" prefHeight="17.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Logradouro" />
+                  <Label layoutX="223.0" layoutY="103.0" prefHeight="17.0" prefWidth="117.0" style="-fx-background-color: #FFFFFF;" text="Data de Nascimento" />
+                  <TextField id="txt_cep" layoutX="511.0" layoutY="219.0" prefHeight="25.0" prefWidth="135.0" />
+                  <Label layoutX="223.0" layoutY="202.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="UF" />
+                  <Label layoutX="412.0" layoutY="99.0" prefHeight="17.0" prefWidth="57.0" style="-fx-background-color: #FFFFFF;" text="Telefone" />
+                  <Label layoutX="434.0" layoutY="257.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Bairro" />
+                  <TextField id="txt_ddd" layoutX="372.0" layoutY="116.0" prefHeight="25.0" prefWidth="31.0" />
+                  <Label layoutX="514.0" layoutY="202.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="CEP" />
+                  <Button id="btn_excluir" layoutX="598.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Excluir" />
+                  <TextField id="txt_logradouro" layoutX="223.0" layoutY="274.0" prefHeight="25.0" prefWidth="135.0" />
+                  <TextField id="txt_complemento" layoutX="583.0" layoutY="274.0" prefHeight="25.0" prefWidth="255.0" />
+                  <Label layoutX="322.0" layoutY="202.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Cidade" />
+                  <Button id="btn_atualizar" layoutX="680.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Atualizar" />
+                  <Button id="btn_salvar" layoutX="763.0" layoutY="323.0" mnemonicParsing="false" prefWidth="73.0" text="Salvar" />
+                  <Button id="btn_sair" layoutX="65.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Sair" />
+                  <Button id="btn_servico" layoutX="65.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Serviço" />
+                  <Button id="btn_veiculo" layoutX="65.0" layoutY="149.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Veículo" />
+                  <Button id="btn_cliente" layoutX="64.0" layoutY="109.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cliente" />
+                  <Separator layoutX="207.0" layoutY="10.0" orientation="VERTICAL" prefHeight="354.0" prefWidth="7.0" />
+                  <Label layoutX="24.0" layoutY="24.0" text="Menu" textFill="#676767">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Button id="btn_inicio" layoutX="64.0" layoutY="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Início" />
+               </children>
+            </AnchorPane>
          </children>
-      </Pane>
+      </AnchorPane>
    </center>
 </BorderPane>

@@ -34,7 +34,6 @@ public class App extends Application {
 			primaryStage.setResizable(false);
 			primaryStage.show();
 
-			// scene.getWindow().setOnCloseRequest(getCloseWindowEvent());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
