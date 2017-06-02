@@ -35,7 +35,7 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Label layoutX="93.0" layoutY="14.0" style="-fx-background-color: #FFFFFF;" text="Transportadora" textFill="#575757">
+            <Label layoutX="88.0" layoutY="18.0" style="-fx-background-color: #FFFFFF;" text="Transportadora" textFill="#575757">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
@@ -46,19 +46,19 @@
    <center>
       <Pane prefHeight="254.0" prefWidth="268.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="110.0" layoutY="76.0" text="Usuário" textFill="#616161">
+            <Label layoutX="105.0" layoutY="76.0" text="Usuário" textFill="#616161">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
             <TextField id="txt_usuario" fx:id="usuario" layoutX="60.0" layoutY="96.0" />
-            <Label layoutX="115.0" layoutY="134.0" text="Senha" textFill="#616161">
+            <Label layoutX="110.0" layoutY="134.0" text="Senha" textFill="#616161">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
             <PasswordField id="txt_senha" fx:id="senha" layoutX="59.0" layoutY="154.0" />
-            <Button id="btn_entrar" layoutX="98.0" layoutY="207.0" mnemonicParsing="false" onAction="#entrar" prefHeight="25.0" prefWidth="70.0" text="Entrar" />
+            <Button id="btn_entrar" layoutX="93.0" layoutY="207.0" mnemonicParsing="false" onAction="#entrar" prefHeight="25.0" prefWidth="70.0" text="Entrar" />
          </children>
       </Pane>
    </center>

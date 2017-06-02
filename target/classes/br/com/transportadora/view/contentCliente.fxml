@@ -17,19 +17,19 @@
       <TextField id="txt_telefone" fx:id="txt_telefone" layoutX="248.0" layoutY="124.0" prefHeight="25.0" prefWidth="201.0" />
       <TextField id="txt_data_nas" fx:id="txt_data_nasc" layoutX="19.0" layoutY="124.0" prefHeight="25.0" prefWidth="168.0" />
       <TextField id="txt_complemento" fx:id="txt_complemento" layoutX="447.0" layoutY="283.0" prefHeight="25.0" prefWidth="255.0" />
-      <Button layoutX="26.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Voltar" />
+      <Button id="btn_voltar" layoutX="26.0" layoutY="335.0" onAction="#actionVoltar"  mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Voltar" />
       <Label layoutX="254.0" layoutY="107.0" prefHeight="17.0" prefWidth="57.0" style="-fx-background-color: #FFFFFF;" text="Telefone" />
       <Label layoutX="31.0" layoutY="266.0" prefHeight="17.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Logradouro" />
-      <Button id="btn_limpar" layoutX="113.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Limpar" />
+      <Button id="btn_limpar" layoutX="113.0" onAction="#actionLimpar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Limpar" />
       <Label layoutX="21.0" layoutY="175.0" text="Endereço" textFill="#676767">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <AnchorPane />
-      <Button id="btn_atualizar" layoutX="689.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Atualizar" />
+      <Button id="btn_atualizar" layoutX="689.0" onAction="#actionAtualizar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Atualizar" />
       <Label layoutX="447.0" layoutY="264.0" prefHeight="17.0" prefWidth="83.0" style="-fx-background-color: #FFFFFF;" text="Complemento" />
-      <Button id="btn_consultar" layoutX="510.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Consultar" />
+      <Button id="btn_consultar" layoutX="510.0" onAction="#actionConsultar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Consultar" />
       <TextField id="txt_cep" fx:id="combo_email" layoutX="388.0" layoutY="226.0" prefHeight="25.0" prefWidth="213.0" />
       <TextField id="txt_nome" fx:id="txt_nome" layoutX="204.0" layoutY="72.0" prefHeight="25.0" prefWidth="280.0" />
       <Label layoutX="17.0" layoutY="55.0" prefHeight="17.0" prefWidth="43.0" style="-fx-background-color: #FFFFFF;" text="CPF" />
@@ -52,12 +52,12 @@
       <Label layoutX="19.0" layoutY="107.0" prefHeight="17.0" prefWidth="117.0" style="-fx-background-color: #FFFFFF;" text="Data de Nascimento" />
       <ChoiceBox id="combo_uf" fx:id="combo_uf" layoutX="26.0" layoutY="226.0" prefHeight="25.0" prefWidth="83.0" />
       <TextField id="txt_logradouro" fx:id="txt_logradouro" layoutX="28.0" layoutY="283.0" prefHeight="25.0" prefWidth="187.0" />
-      <Button id="btn_excluir" layoutX="600.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Excluir" />
+      <Button id="btn_excluir" layoutX="600.0" onAction="#actionSalvar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Excluir" />
       <TextField id="txt_num" fx:id="txt_num" layoutX="236.0" layoutY="283.0" prefHeight="25.0" prefWidth="44.0" />
       <Label layoutX="297.0" layoutY="264.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Bairro" />
       <Label layoutX="466.0" layoutY="107.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="E-mail" />
       <Label layoutX="208.0" layoutY="55.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nome" />
-      <Button id="btn_salvar" layoutX="774.0" layoutY="335.0" mnemonicParsing="false" prefWidth="73.0" text="Salvar" />
+      <Button id="btn_salvar" layoutX="774.0" onAction="#actionSalvar" layoutY="335.0" mnemonicParsing="false" prefWidth="73.0" text="Salvar" />
       <Label layoutX="204.0" layoutY="107.0" prefHeight="17.0" prefWidth="50.0" style="-fx-background-color: #FFFFFF;" text="DDD" />
       <TextField id="txt_ddd" fx:id="txt_ddd" layoutX="206.0" layoutY="124.0" prefHeight="25.0" prefWidth="31.0" />
       <TextField id="txt_sobrenome" fx:id="txt_sobrenome" layoutX="509.0" layoutY="72.0" prefHeight="25.0" prefWidth="324.0" />

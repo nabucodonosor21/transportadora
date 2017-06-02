@@ -17,7 +17,7 @@ public class MenuController implements Initializable{
 	}
 	
 	public void actionFuncionario(final ActionEvent arg0){
-		
+		Util.redirecionaChild("view/contentFuncionario.fxml");
 	}
 	
 	public void actionCliente(final ActionEvent arg0){

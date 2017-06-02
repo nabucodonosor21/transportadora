@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.BorderPane;
 
@@ -32,7 +33,7 @@ public class LoginController implements Initializable{
 	}
 	
 	public void entrar(final ActionEvent arg0){
-//		if(usuario.getText().equals("murilo") || senha.getText().equals("123")){
+		if(usuario.getText().equals("murilo") && senha.getText().equals("123")){
 			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(App.class.getResource("view/telaPrincipal.fxml"));
@@ -47,7 +48,13 @@ public class LoginController implements Initializable{
 				e.printStackTrace();
 			}
 			
-//		}
+		} else {
+			Alert dialogoErro = new Alert(Alert.AlertType.WARNING);
+			dialogoErro.setTitle("Erro");
+			dialogoErro.setHeaderText("Autenticação inválida");
+			dialogoErro.setContentText("Usuário ou senha inválido");
+			dialogoErro.showAndWait();
+		}
 	}
 	
 }

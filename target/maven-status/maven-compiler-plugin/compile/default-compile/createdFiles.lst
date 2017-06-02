@@ -1,4 +1,7 @@
+br\com\transportadora\controllers\ClienteController.class
 br\com\transportadora\util\Util.class
-br\com\transportadora\controllers\LoginController.class
-br\com\transportadora\App.class
+br\com\transportadora\controllers\MenuController.class
 br\com\transportadora\conf\ConexaoBD.class
+br\com\transportadora\controllers\LoginController.class
+br\com\transportadora\controllers\PrincipalController.class
+br\com\transportadora\App.class

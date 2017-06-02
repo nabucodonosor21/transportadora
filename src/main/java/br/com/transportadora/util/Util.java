@@ -40,13 +40,17 @@ public class Util {
 			Object obj = loader.load();
 
 			LoginController.ROOT_LAYOUT.setCenter((Node) obj);
-
 			return loader;
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void imprimeMsg(String excluir) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
