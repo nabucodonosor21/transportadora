@@ -1,0 +1,2562 @@
+-- MySQL Administrator dump 1.4
+--
+-- ------------------------------------------------------
+-- Server version	5.6.17
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+--
+-- Create schema transportadora
+--
+
+CREATE DATABASE IF NOT EXISTS transportadora;
+USE transportadora;
+
+--
+-- Definition of table `cidade`
+--
+
+DROP TABLE IF EXISTS `cidade`;
+CREATE TABLE `cidade` (
+  `cidade_id` int(11) NOT NULL,
+  `nome` varchar(60) NOT NULL,
+  `uf` char(2) NOT NULL,
+  PRIMARY KEY (`cidade_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cidade`
+--
+
+/*!40000 ALTER TABLE `cidade` DISABLE KEYS */;
+INSERT INTO `cidade` (`cidade_id`,`nome`,`uf`) VALUES 
+ (1,'Santo André','SP');
+/*!40000 ALTER TABLE `cidade` ENABLE KEYS */;
+
+
+--
+-- Definition of table `cliente`
+--
+
+DROP TABLE IF EXISTS `cliente`;
+CREATE TABLE `cliente` (
+  `cliente_id` int(11) NOT NULL,
+  `endereco_id` int(11) NOT NULL,
+  `nome` varchar(25) NOT NULL,
+  `sobrenome` varchar(50) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `data_nascimento` date NOT NULL,
+  `email` varchar(75) DEFAULT NULL,
+  `ddd` varchar(4) DEFAULT NULL,
+  `telefone` varchar(10) DEFAULT NULL,
+  `flag_maior_idade` char(1) NOT NULL,
+  `flag_bloqueado` varchar(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`cliente_id`),
+  KEY `endereco_cliente_fk` (`endereco_id`),
+  CONSTRAINT `endereco_cliente_fk` FOREIGN KEY (`endereco_id`) REFERENCES `endereco` (`endereco_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cliente`
+--
+
+/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` (`cliente_id`,`endereco_id`,`nome`,`sobrenome`,`cpf`,`data_nascimento`,`email`,`ddd`,`telefone`,`flag_maior_idade`,`flag_bloqueado`) VALUES 
+ (1,27,'JOAZEIRO','MIL','12557754242','2000-01-01','teste@teste.com','11','444978788','S','N'),
+ (2,28,'TESTE','MIL','12557754242','2000-01-01','teste@teste.com','11','444978788','S','N');
+/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+
+
+--
+-- Definition of table `cliente_respons_x_cliente`
+--
+
+DROP TABLE IF EXISTS `cliente_respons_x_cliente`;
+CREATE TABLE `cliente_respons_x_cliente` (
+  `cliente_responsavel_id` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  PRIMARY KEY (`cliente_responsavel_id`,`cliente_id`),
+  KEY `cliente_cliente_respons_x_cliente_fk` (`cliente_id`),
+  CONSTRAINT `cliente_cliente_respons_x_cliente_fk` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`cliente_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `cliente_responsavel_cliente_respons_x_cliente_fk` FOREIGN KEY (`cliente_responsavel_id`) REFERENCES `cliente_responsavel` (`cliente_responsavel_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cliente_respons_x_cliente`
+--
+
+/*!40000 ALTER TABLE `cliente_respons_x_cliente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cliente_respons_x_cliente` ENABLE KEYS */;
+
+
+--
+-- Definition of table `cliente_responsavel`
+--
+
+DROP TABLE IF EXISTS `cliente_responsavel`;
+CREATE TABLE `cliente_responsavel` (
+  `cliente_responsavel_id` int(11) NOT NULL,
+  `endereco_id` int(11) NOT NULL,
+  `nome` varchar(25) NOT NULL,
+  `sobrenome` varchar(50) NOT NULL,
+  `data_nascimento` date NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `email` varchar(75) DEFAULT NULL,
+  `ddd` varchar(4) DEFAULT NULL,
+  `pais_codigo` int(11) DEFAULT NULL,
+  `telefone` varchar(10) DEFAULT NULL,
+  `estado_civil_id` int(11) DEFAULT NULL,
+  `flag_maior_idade` char(1) NOT NULL,
+  `flag_bloqueado` varchar(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`cliente_responsavel_id`),
+  KEY `estado_civil_cliente_responsavel_fk` (`estado_civil_id`),
+  KEY `pais_nacionalidade_cliente_responsavel_fk` (`pais_codigo`),
+  KEY `endereco_cliente_responsavel_fk` (`endereco_id`),
+  CONSTRAINT `endereco_cliente_responsavel_fk` FOREIGN KEY (`endereco_id`) REFERENCES `endereco` (`endereco_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `estado_civil_cliente_responsavel_fk` FOREIGN KEY (`estado_civil_id`) REFERENCES `estado_civil` (`estado_civil_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `pais_nacionalidade_cliente_responsavel_fk` FOREIGN KEY (`pais_codigo`) REFERENCES `pais_nacionalidade` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cliente_responsavel`
+--
+
+/*!40000 ALTER TABLE `cliente_responsavel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cliente_responsavel` ENABLE KEYS */;
+
+
+--
+-- Definition of table `documento_cliente`
+--
+
+DROP TABLE IF EXISTS `documento_cliente`;
+CREATE TABLE `documento_cliente` (
+  `documento_id` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `tipo_documento_id` int(11) NOT NULL,
+  `numero` varchar(40) NOT NULL,
+  `data_emissao` date DEFAULT NULL,
+  `uf_emissor` char(2) DEFAULT NULL,
+  PRIMARY KEY (`documento_id`),
+  KEY `tipo_documento_documento_cliente_fk` (`tipo_documento_id`),
+  KEY `cliente_documento_cliente_fk` (`cliente_id`),
+  CONSTRAINT `cliente_documento_cliente_fk` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`cliente_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tipo_documento_documento_cliente_fk` FOREIGN KEY (`tipo_documento_id`) REFERENCES `tipo_documento` (`tipo_documento_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `documento_cliente`
+--
+
+/*!40000 ALTER TABLE `documento_cliente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `documento_cliente` ENABLE KEYS */;
+
+
+--
+-- Definition of table `endereco`
+--
+
+DROP TABLE IF EXISTS `endereco`;
+CREATE TABLE `endereco` (
+  `endereco_id` int(11) NOT NULL,
+  `cep` varchar(14) DEFAULT NULL,
+  `uf` char(2) DEFAULT NULL,
+  `cidade` varchar(60) DEFAULT NULL,
+  `logradouro` varchar(60) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `complemento` varchar(60) DEFAULT NULL,
+  `bairro` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`endereco_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `endereco`
+--
+
+/*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
+INSERT INTO `endereco` (`endereco_id`,`cep`,`uf`,`cidade`,`logradouro`,`numero`,`complemento`,`bairro`) VALUES 
+ (1,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (2,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (3,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (4,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (5,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (6,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (7,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (8,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (9,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (10,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (11,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (12,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (13,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (14,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (15,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (16,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (17,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (18,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (19,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (20,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (21,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (22,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (23,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (24,'09290030','SP','Santo Andre','Rua Joao',1,NULL,'Joao Ram'),
+ (25,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (26,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (27,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (28,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (29,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (30,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (31,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (32,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (33,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (34,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (35,'0929030','SP','Santo André','Marago',2,'Joao','Joao'),
+ (36,'09290030','SP','Santo André','Marago',7,'','João'),
+ (37,'09290030','SP','Santo André','Marago',7,'','João'),
+ (38,'0929030','SP','Santo Anré','Rua Maragogipe',1,'Padaria','Ramalhão'),
+ (39,'0929030','SP','Santo Anré','Rua Maragogipe',1,'Pada','Ramalhão'),
+ (40,'0929030','SP','Santo Anré','Rua Maragogipe',1,'Pada','Ramalhão'),
+ (41,'09290030','SP','Santo André','Marago',2,'Camp','Joao'),
+ (42,'09290030','SP','Santo André','Rua Mara',1,'Pada','Joao'),
+ (43,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (44,'09290030','SP','Santo','Rua Joao',1,NULL,'Joao Ram'),
+ (45,'09290030','SP','Santo André','Rua Mara',1,'Pada','Joao'),
+ (46,'09290030','SP','Santo And?e','Rua Joao',233,'Padaria','Joao'),
+ (47,'09290030','SP','Santo André','Joao',123,'Padaria','Joao'),
+ (48,'','','','',0,'',''),
+ (49,'','','','',0,'',''),
+ (50,'','','','',0,'',''),
+ (51,'','','','',0,'','');
+/*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
+
+
+--
+-- Definition of table `estado_civil`
+--
+
+DROP TABLE IF EXISTS `estado_civil`;
+CREATE TABLE `estado_civil` (
+  `estado_civil_id` int(11) NOT NULL,
+  `estado_civil` varchar(15) NOT NULL,
+  `estado_civil_fem` varchar(15) NOT NULL,
+  `estado_civil_masc` varchar(15) NOT NULL,
+  PRIMARY KEY (`estado_civil_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `estado_civil`
+--
+
+/*!40000 ALTER TABLE `estado_civil` DISABLE KEYS */;
+/*!40000 ALTER TABLE `estado_civil` ENABLE KEYS */;
+
+
+--
+-- Definition of table `frete_prazo`
+--
+
+DROP TABLE IF EXISTS `frete_prazo`;
+CREATE TABLE `frete_prazo` (
+  `frete_prazo_id` int(11) NOT NULL,
+  `data_postagem` date NOT NULL,
+  `tipo_servico` char(5) NOT NULL,
+  `cep_origem` varchar(10) NOT NULL,
+  `cep_destino` varchar(10) NOT NULL,
+  `qtde_dias_uteis` int(11) NOT NULL,
+  `qtde_dias_totais` int(11) NOT NULL,
+  PRIMARY KEY (`frete_prazo_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `frete_prazo`
+--
+
+/*!40000 ALTER TABLE `frete_prazo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `frete_prazo` ENABLE KEYS */;
+
+
+--
+-- Definition of table `frete_preco`
+--
+
+DROP TABLE IF EXISTS `frete_preco`;
+CREATE TABLE `frete_preco` (
+  `frete_preco_id` int(11) NOT NULL,
+  `formato` varchar(20) NOT NULL,
+  `largura` decimal(10,2) DEFAULT NULL,
+  `altura` decimal(10,2) DEFAULT NULL,
+  `peso` decimal(10,2) DEFAULT NULL,
+  `comprimento` decimal(10,2) DEFAULT NULL,
+  `quantidade` int(11) DEFAULT NULL,
+  `valor_declarado` decimal(10,2) NOT NULL,
+  `valor_frete` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`frete_preco_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `frete_preco`
+--
+
+/*!40000 ALTER TABLE `frete_preco` DISABLE KEYS */;
+/*!40000 ALTER TABLE `frete_preco` ENABLE KEYS */;
+
+
+--
+-- Definition of table `funcionario`
+--
+
+DROP TABLE IF EXISTS `funcionario`;
+CREATE TABLE `funcionario` (
+  `funcionario_id` int(11) NOT NULL,
+  `nome` varchar(25) NOT NULL,
+  `sobrenome` varchar(50) NOT NULL,
+  `data_nascimento` date NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `ddd` varchar(4) DEFAULT NULL,
+  `telefone` varchar(10) DEFAULT NULL,
+  `endereco_id` int(11) DEFAULT NULL,
+  `cargo` varchar(30) NOT NULL,
+  `flag_ativo` char(1) NOT NULL DEFAULT 'S',
+  `flag_bloqueado` varchar(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`funcionario_id`),
+  KEY `endereco_funcionario_fk` (`endereco_id`),
+  CONSTRAINT `endereco_funcionario_fk` FOREIGN KEY (`endereco_id`) REFERENCES `endereco` (`endereco_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `funcionario`
+--
+
+/*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
+INSERT INTO `funcionario` (`funcionario_id`,`nome`,`sobrenome`,`data_nascimento`,`cpf`,`ddd`,`telefone`,`endereco_id`,`cargo`,`flag_ativo`,`flag_bloqueado`) VALUES 
+ (1,'TESTE','TESTE','0000-00-00','44978788803','11','44478899',NULL,'Teste Teste','S','N'),
+ (2,'TESTE','TESTE','0000-00-00','44978788803','11','44478899',NULL,'Teste Teste','S','N'),
+ (3,'TESTE','TESTE','0000-00-00','44978788803','11','44478899',NULL,'Teste Teste','S','N'),
+ (4,'TESTE','TESTE','0000-00-00','44978788803','11','44478899',NULL,'Teste Teste','S','N'),
+ (5,'TESTE','TESTE','0000-00-00','44978788803','11','44478899',NULL,'Teste Teste','S','N'),
+ (6,'TESTE','TESTE','0000-00-00','44978788803','11','44478899',NULL,'Teste Teste','S','N'),
+ (7,'TESTE22','TESTE22','0000-00-00','teste22','11','44448888',NULL,'teste','S','N'),
+ (8,'TESTE33','TESTE33','0000-00-00','teste22','11','44448888',NULL,'teste','S','N'),
+ (9,'TE','T','0000-00-00','44978788803','11','1111111',NULL,'te','S','N'),
+ (10,'MURILO','RERE','0000-00-00','44978788803','11','111',NULL,'Teste','S','N'),
+ (11,'LE','LE','0000-00-00','44978788803','11','1111111',NULL,'asda','S','N'),
+ (12,'FDS','DA','0000-00-00','44978788803','11','1111111',NULL,'1','S','N'),
+ (13,'12312','31231','0000-00-00','44978788803','11','1111111',NULL,'Teste','S','S'),
+ (14,'GFGDF','GDFG','0000-00-00','44978788803','11','111',NULL,'Teste','S','S'),
+ (15,'MURILO CRE','TESTE','0000-00-00','44978788803','11','444878899',NULL,'teste','S','N'),
+ (16,'TIAGO','TESTE','0000-00-00','44978788803','11','1111111',NULL,'11','S','N'),
+ (17,'MURILO CRE','TESTE','0000-00-00','44978788803','11','444878899',NULL,'teste','S','N'),
+ (18,'MURILO CRE','TESTE','0000-00-00','44978788803','11','444878899',NULL,'teste','S','N'),
+ (19,'MURILO CRE','TESTE','0000-00-00','44978788803','11','444878899',NULL,'teste','S','N'),
+ (20,'MURILO CRE','TESTE','0000-00-00','44978788803','11','444878899',NULL,'teste','S','N'),
+ (21,'MURILO CRE','TESTE','0000-00-00','44978788803','11','444878899',NULL,'teste','S','N'),
+ (22,'MARCOS','MARCOS','0000-00-00','44978788803','11','1111111',NULL,'Teste','S','N'),
+ (23,'KAIQUE','KAIO','0000-00-00','44978788803','11','1111111',NULL,'Teste','S','N'),
+ (24,'SÃ©RGIO','DLC','0000-00-00','42638794813','11','49871233',NULL,'Tester','S','N'),
+ (25,'TESTE TESTE','TESTE','0000-00-00','44978788803','11','44751929',NULL,'Tester','S','N'),
+ (26,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',1,'aux','S','N'),
+ (27,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',1,'aux','S','N'),
+ (28,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',3,'aux','S','N'),
+ (29,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',4,'aux','S','N'),
+ (30,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',5,'aux','S','N'),
+ (31,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',7,'aux','S','N'),
+ (32,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',9,'aux','S','N'),
+ (33,'ROGER','TESTE','2000-01-01','44978788803','11','444978788',22,'aux','S','N'),
+ (34,'GUIMA','TESTE','2000-01-01','44978788803','11','444978788',23,'aux','S','N'),
+ (35,'TESTE','TESTE','2000-01-01','44978788803','11','444978788',24,'aux','S','N'),
+ (36,'JOAZEIRO','MIL','2000-01-01','12557754242','11','444978788',34,'aux','S','N'),
+ (37,'MURILO','COUTINHO','1997-10-17','44978788803','11','4498-0909',35,'Auxiliar','S','N'),
+ (40,'MURILO','CRE','1997-10-19','37126014090','11','44751829',38,'Auxiliar','S','N'),
+ (41,'MURILO','CRE','1997-10-19','54028672830','11','44751829',39,'Auxiliar','S','N'),
+ (42,'MURILO','CRE','1997-10-19','54028672830','11','44751829',40,'Auxiliar','S','N'),
+ (43,'MURILO','CREM','1997-10-17','54028672830','11','4478-9899',41,'Auxiliar','S','N'),
+ (44,'MURILO','CRE','1997-10-17','54028672830','11','44490909',42,'Auxiliar','S','N'),
+ (45,'JOAZEIRO','MIL','2000-01-01','37126014090','11','444978788',43,'aux','S','N'),
+ (46,'JOAZEIRO','MIL','2000-01-01','37126014090','11','444978788',44,'aux','S','N'),
+ (47,'MURILO','CRE','1997-10-17','54028672830','11','44490909',45,'Auxiliar','S','N');
+/*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
+
+
+--
+-- Definition of table `funcionario_despesa`
+--
+
+DROP TABLE IF EXISTS `funcionario_despesa`;
+CREATE TABLE `funcionario_despesa` (
+  `funcionario_id` int(11) NOT NULL,
+  `salario_bruto` decimal(10,2) NOT NULL,
+  `salario_liquido` decimal(10,2) NOT NULL,
+  `descontos` decimal(10,2) NOT NULL,
+  `ultima_atualizacao` date NOT NULL,
+  `tipo_contratacao` char(3) NOT NULL,
+  PRIMARY KEY (`funcionario_id`),
+  CONSTRAINT `funcionario_funcionario_dispesa_fk` FOREIGN KEY (`funcionario_id`) REFERENCES `funcionario` (`funcionario_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `funcionario_despesa`
+--
+
+/*!40000 ALTER TABLE `funcionario_despesa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `funcionario_despesa` ENABLE KEYS */;
+
+
+--
+-- Definition of table `funcionario_x_veiculo`
+--
+
+DROP TABLE IF EXISTS `funcionario_x_veiculo`;
+CREATE TABLE `funcionario_x_veiculo` (
+  `funcionario_id` int(11) NOT NULL,
+  `veiculo_id` int(11) NOT NULL,
+  PRIMARY KEY (`funcionario_id`,`veiculo_id`),
+  KEY `veiculo_funcionario_x_veiculo_fk` (`veiculo_id`),
+  CONSTRAINT `funcionario_funcionario_x_veiculo_fk` FOREIGN KEY (`funcionario_id`) REFERENCES `funcionario` (`funcionario_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `veiculo_funcionario_x_veiculo_fk` FOREIGN KEY (`veiculo_id`) REFERENCES `veiculo` (`veiculo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `funcionario_x_veiculo`
+--
+
+/*!40000 ALTER TABLE `funcionario_x_veiculo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `funcionario_x_veiculo` ENABLE KEYS */;
+
+
+--
+-- Definition of table `log_erro`
+--
+
+DROP TABLE IF EXISTS `log_erro`;
+CREATE TABLE `log_erro` (
+  `log_erro_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cod_erro` varchar(10) DEFAULT NULL,
+  `desc_erro` varchar(500) DEFAULT NULL,
+  `data_log` date DEFAULT NULL,
+  `tipo` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`log_erro_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `log_erro`
+--
+
+/*!40000 ALTER TABLE `log_erro` DISABLE KEYS */;
+INSERT INTO `log_erro` (`log_erro_id`,`cod_erro`,`desc_erro`,`data_log`,`tipo`) VALUES 
+ (1,'00000','Cadastro Efetuado com sucesso','2017-04-23','FUNCIONARIO'),
+ (2,'00000','Cadastro Efetuado com sucesso','2017-04-23','FUNCIONARIO'),
+ (3,'00000','Cadastro Efetuado com sucesso','2017-04-23','FUNCIONARIO'),
+ (4,'90000','O CPF está inválido','2017-04-23','FUNCIONARIO'),
+ (5,'00000','Cadastro Efetuado com sucesso','2017-04-23','FUNCIONARIO'),
+ (6,'00000','Cadastro Efetuado com sucesso','2017-04-23','FUNCIONARIO'),
+ (7,'90000','O CPF é obrigatório','2017-04-26','FUNCIONARIO'),
+ (8,'90000','Quando o telefone não for preenchido, o email é obrigatório','2017-04-26','FUNCIONARIO'),
+ (9,'90000','O CPF é obrigatório','2017-04-26','FUNCIONARIO'),
+ (10,'90000','O nome do Funcionário é obrigatório','2017-04-26','FUNCIONARIO'),
+ (11,'90000','Quando o telefone não for preenchido, o email é obrigatório','2017-04-26','FUNCIONARIO'),
+ (12,'90000','A cidade está inválida','2017-04-26','FUNCIONARIO'),
+ (13,'90000','A cidade está inválida','2017-04-26','FUNCIONARIO'),
+ (14,'90000','O nome do funcionário excedeu os caracteres permitidos.','2017-04-26','FUNCIONARIO'),
+ (15,'90000','A flag de usuario ativo está inválida','2017-04-26','FUNCIONARIO'),
+ (16,'00000','Cadastro Efetuado com sucesso','2017-05-04','FUNCIONARIO'),
+ (17,'00000','Cadastro Efetuado com sucesso','2017-05-04','FUNCIONARIO'),
+ (18,'23000','Duplicata du champ \'26\' pour la clef \'PRIMARY\'','2017-06-04','ENDERECO'),
+ (19,'23000','Duplicata du champ \'26\' pour la clef \'PRIMARY\'','2017-06-04','ENDERECO'),
+ (20,'42S22','Champ \'p_sexo\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (21,'42S22','Champ \'p_sexo\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (22,'23000','Le champ \'data_nascimento\' ne peut être vide (null)','2017-06-04','FUNCIONARIO'),
+ (23,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (24,'42S22','Champ \'p_logradouro15\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (25,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (26,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (27,'90000','O CPF está inválido','2017-06-04','FUNCIONARIO'),
+ (28,'90000','A data de nascimento é obrigatória','2017-06-04','FUNCIONARIO'),
+ (29,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (30,'90000','O CPF está inválido','2017-06-04','FUNCIONARIO'),
+ (31,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (32,'HY000','Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation \'=\'','2017-06-04','FUNCIONARIO'),
+ (33,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (34,'HY000','Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation \'=\'','2017-06-04','FUNCIONARIO'),
+ (35,'HY000','Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation \'=\'','2017-06-04','FUNCIONARIO'),
+ (36,'HY000','Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation \'=\'','2017-06-04','FUNCIONARIO'),
+ (37,'42S22','Champ \'v_cpf\' inconnu dans where clause','2017-06-04','FUNCIONARIO'),
+ (38,'42S22','Champ \'v_cpf\' inconnu dans where clause','2017-06-04','FUNCIONARIO'),
+ (39,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (40,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (41,'00000','1','2017-06-04','FUNCIONARIO'),
+ (42,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (43,'HY000','Vous êtes en mode \'safe update\' et vous essayez de faire un UPDATE sans clause WHERE utilisant un index','2017-06-04','FUNCIONARIO'),
+ (44,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (45,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (46,'42S22','Champ \'cpf\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (47,'42S22','Champ \'cargo\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (48,'42000','Champ \'email\' spécifié deux fois','2017-06-04','FUNCIONARIO'),
+ (49,'21S01','Column count doesn\'t match value count at row 1','2017-06-04','FUNCIONARIO'),
+ (50,'21S01','Column count doesn\'t match value count at row 1','2017-06-04','CLIENTE'),
+ (51,'21S01','Column count doesn\'t match value count at row 1','2017-06-04','CLIENTE'),
+ (52,'21S01','Column count doesn\'t match value count at row 1','2017-06-04','CLIENTE'),
+ (53,'00000','Cadastro Efetuado com sucesso','2017-06-04','CLIENTE'),
+ (54,'00000','Cadastro Efetuado com sucesso','2017-06-04','CLIENTE'),
+ (55,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','FUNCIONARIO'),
+ (56,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','FUNCIONARIO'),
+ (57,'00000','Cadastro Efetuado com sucesso','2017-06-04','CLIENTE'),
+ (58,'42S22','Champ \'cargo\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (59,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (60,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (61,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (62,'90000','CPF não encontrado','2017-06-04','FUNCIONARIO'),
+ (63,'90000','CPF não encontrado','2017-06-04','FUNCIONARIO'),
+ (64,'00000','Atualização Efetuada com sucesso','2017-06-04','FUNCIONARIO'),
+ (65,'00000','Cadastro Efetuado com sucesso','2017-06-04','CLIENTE'),
+ (66,'00000','Atualização Efetuada com sucesso','2017-06-04','CLIENTE'),
+ (67,'90000','CPF não encontrado','2017-06-04','FUNCIONARIO'),
+ (68,'00000','Cadastro Efetuado com sucesso','2017-06-04','CLIENTE'),
+ (69,'90000','CPF não encontrado','2017-06-04','FUNCIONARIO'),
+ (70,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','FUNCIONARIO'),
+ (71,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','FUNCIONARIO'),
+ (72,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','FUNCIONARIO'),
+ (73,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','CLIENTE'),
+ (74,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','CLIENTE'),
+ (75,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','CLIENTE'),
+ (76,'42000','Le résultat contient plus d\'un enregistrement','2017-06-04','CLIENTE'),
+ (77,'90000','CPF não encontrado','2017-06-04','CLIENTE'),
+ (78,'90000','CPF não encontrado','2017-06-04','CLIENTE'),
+ (79,'90000','CPF não encontrado','2017-06-04','CLIENTE'),
+ (80,'90000','CPF não encontrado','2017-06-04','FUNCIONARIO'),
+ (81,'00000','Cadastro Efetuado com sucesso','2017-06-04','CLIENTE'),
+ (82,'00000','Atualização Efetuada com sucesso','2017-06-04','CLIENTE'),
+ (83,'42S22','Champ \'p_email\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (84,'42S22','Champ \'p_email\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (85,'42S22','Champ \'p_email\' inconnu dans field list','2017-06-04','FUNCIONARIO'),
+ (86,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (87,'90000','O CPF está inválido','2017-06-04','FUNCIONARIO'),
+ (88,'00000','Cadastro Efetuado com sucesso','2017-06-04','FUNCIONARIO'),
+ (89,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (90,'90000','O CPF está inválido','2017-06-06','FUNCIONARIO'),
+ (91,'90000','O CPF está inválido','2017-06-06','FUNCIONARIO'),
+ (92,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (93,'42S22','Champ \'p_email\' inconnu dans field list','2017-06-06','FUNCIONARIO'),
+ (94,'90000','O CPF está inválido','2017-06-06','FUNCIONARIO'),
+ (95,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (96,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (97,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (98,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (99,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (100,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (101,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (102,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (103,'42000','Le résultat contient plus d\'un enregistrement','2017-06-06','FUNCIONARIO'),
+ (104,'00000','Atualização Efetuada com sucesso','2017-06-06','FUNCIONARIO'),
+ (105,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (106,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (107,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (108,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (109,'90000','O CPF está inválido','2017-06-06','FUNCIONARIO'),
+ (110,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (111,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (112,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (113,'00000','Cadastro Efetuado com sucesso','2017-06-06','FUNCIONARIO'),
+ (114,'00000','Atualização Efetuada com sucesso','2017-06-06','FUNCIONARIO'),
+ (115,'90000','O CPF está inválido','2017-06-06','FUNCIONARIO'),
+ (116,'90000','O CPF está inválido','2017-06-06','CLIENTE'),
+ (117,'00000','Cadastro Efetuado com sucesso','2017-06-06','CLIENTE'),
+ (118,'00000','Atualização Efetuada com sucesso','2017-06-06','CLIENTE'),
+ (119,'00000','Cadastro Efetuado com sucesso','2017-06-06','CLIENTE'),
+ (120,'00000','Cadastro Efetuado com sucesso','2017-06-06','CLIENTE'),
+ (121,'00000','Cadastro Efetuado com sucesso','2017-06-06','CLIENTE'),
+ (122,'00000','Cadastro Efetuado com sucesso','2017-06-06','CLIENTE');
+/*!40000 ALTER TABLE `log_erro` ENABLE KEYS */;
+
+
+--
+-- Definition of table `manutencao_revisao_veiculo`
+--
+
+DROP TABLE IF EXISTS `manutencao_revisao_veiculo`;
+CREATE TABLE `manutencao_revisao_veiculo` (
+  `manutencao_revisao_veiculo_id` int(11) NOT NULL,
+  `veiculo_id` int(11) NOT NULL,
+  `tipo` char(1) NOT NULL,
+  `data_revisao` date DEFAULT NULL,
+  `servico_realizado` varchar(500) DEFAULT NULL,
+  `apresentou_defeito` char(1) NOT NULL,
+  `defeito` varchar(200) DEFAULT NULL,
+  `tempo_ausencia_dias` int(11) DEFAULT NULL,
+  `valor_cobrado` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`manutencao_revisao_veiculo_id`),
+  KEY `veiculo_revisao_veiculo_fk` (`veiculo_id`),
+  CONSTRAINT `veiculo_revisao_veiculo_fk` FOREIGN KEY (`veiculo_id`) REFERENCES `veiculo` (`veiculo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `manutencao_revisao_veiculo`
+--
+
+/*!40000 ALTER TABLE `manutencao_revisao_veiculo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `manutencao_revisao_veiculo` ENABLE KEYS */;
+
+
+--
+-- Definition of table `marca`
+--
+
+DROP TABLE IF EXISTS `marca`;
+CREATE TABLE `marca` (
+  `marca_id` int(11) NOT NULL,
+  `marca` varchar(20) NOT NULL,
+  PRIMARY KEY (`marca_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `marca`
+--
+
+/*!40000 ALTER TABLE `marca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `marca` ENABLE KEYS */;
+
+
+--
+-- Definition of table `modelo`
+--
+
+DROP TABLE IF EXISTS `modelo`;
+CREATE TABLE `modelo` (
+  `modelo_id` int(11) NOT NULL,
+  `marca_id` int(11) NOT NULL,
+  `modelo` varchar(20) NOT NULL,
+  PRIMARY KEY (`modelo_id`),
+  KEY `marca_modelo_fk` (`marca_id`),
+  CONSTRAINT `marca_modelo_fk` FOREIGN KEY (`marca_id`) REFERENCES `marca` (`marca_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `modelo`
+--
+
+/*!40000 ALTER TABLE `modelo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `modelo` ENABLE KEYS */;
+
+
+--
+-- Definition of table `pais_nacionalidade`
+--
+
+DROP TABLE IF EXISTS `pais_nacionalidade`;
+CREATE TABLE `pais_nacionalidade` (
+  `codigo` int(11) NOT NULL,
+  `nome` varchar(60) NOT NULL,
+  `nac_feminino` varchar(50) NOT NULL,
+  `nac_masculino` varchar(50) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pais_nacionalidade`
+--
+
+/*!40000 ALTER TABLE `pais_nacionalidade` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pais_nacionalidade` ENABLE KEYS */;
+
+
+--
+-- Definition of table `servico`
+--
+
+DROP TABLE IF EXISTS `servico`;
+CREATE TABLE `servico` (
+  `servico_id` int(11) NOT NULL,
+  `funcionario_id` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `veiculo_id` int(11) NOT NULL,
+  `frete_preco_id` int(11) NOT NULL,
+  `frete_prazo_id` int(11) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `cidade_id` int(11) NOT NULL,
+  PRIMARY KEY (`servico_id`),
+  KEY `frete_preco_mercadoria_fk` (`frete_preco_id`),
+  KEY `frete_prazo_mercadoria_fk` (`frete_prazo_id`),
+  KEY `veiculo_mercadoria_fk` (`veiculo_id`),
+  KEY `cidade_servico_fk` (`cidade_id`),
+  KEY `cliente_mercadoria_fk` (`cliente_id`),
+  KEY `funcionario_mercadoria_fk` (`funcionario_id`),
+  CONSTRAINT `cidade_servico_fk` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`cidade_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `cliente_mercadoria_fk` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`cliente_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `frete_prazo_mercadoria_fk` FOREIGN KEY (`frete_prazo_id`) REFERENCES `frete_prazo` (`frete_prazo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `frete_preco_mercadoria_fk` FOREIGN KEY (`frete_preco_id`) REFERENCES `frete_preco` (`frete_preco_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `funcionario_mercadoria_fk` FOREIGN KEY (`funcionario_id`) REFERENCES `funcionario` (`funcionario_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `veiculo_mercadoria_fk` FOREIGN KEY (`veiculo_id`) REFERENCES `veiculo` (`veiculo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `servico`
+--
+
+/*!40000 ALTER TABLE `servico` DISABLE KEYS */;
+/*!40000 ALTER TABLE `servico` ENABLE KEYS */;
+
+
+--
+-- Definition of table `tipo_documento`
+--
+
+DROP TABLE IF EXISTS `tipo_documento`;
+CREATE TABLE `tipo_documento` (
+  `tipo_documento_id` int(11) NOT NULL,
+  `tipo_documento` varchar(60) NOT NULL,
+  PRIMARY KEY (`tipo_documento_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tipo_documento`
+--
+
+/*!40000 ALTER TABLE `tipo_documento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tipo_documento` ENABLE KEYS */;
+
+
+--
+-- Definition of table `veiculo`
+--
+
+DROP TABLE IF EXISTS `veiculo`;
+CREATE TABLE `veiculo` (
+  `veiculo_id` int(11) NOT NULL,
+  `modelo_id` int(11) NOT NULL,
+  `cor` varchar(15) DEFAULT NULL,
+  `ano` int(11) NOT NULL,
+  `placa` varchar(6) NOT NULL,
+  `flag_ativo` char(1) NOT NULL DEFAULT 'S',
+  `flag_revisado` char(1) NOT NULL DEFAULT 'S',
+  `flag_assegurado` char(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`veiculo_id`),
+  KEY `modelo_veiculo_fk` (`modelo_id`),
+  CONSTRAINT `modelo_veiculo_fk` FOREIGN KEY (`modelo_id`) REFERENCES `modelo` (`modelo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `veiculo`
+--
+
+/*!40000 ALTER TABLE `veiculo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `veiculo` ENABLE KEYS */;
+
+
+--
+-- Definition of function `cpf_converter`
+--
+
+DROP FUNCTION IF EXISTS `cpf_converter`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `cpf_converter`(
+	p_cpf VARCHAR(50)
+) RETURNS varchar(14) CHARSET utf8
+BEGIN
+	 DECLARE l_ret VARCHAR(14);
+     
+	 -- Retirando possiveis formatacoes no valor recebido.
+	 SET p_cpf = replace(p_cpf,'.','');
+	 SET p_cpf = replace(p_cpf,'-','');
+	 SET p_cpf = replace(p_cpf,'/','');
+	 SET p_cpf = replace(p_cpf,' ','');
+	 SET p_cpf = trim(p_cpf);
+     
+	 -- Armazenando o valor recebido em uma variavel interna
+	 SET l_ret = p_cpf;
+     
+	 -- Retornando o resultado
+	 RETURN l_ret;
+ END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of function `cpf_mostrar`
+--
+
+DROP FUNCTION IF EXISTS `cpf_mostrar`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `cpf_mostrar`(p_cpf varchar(20)) RETURNS varchar(14) CHARSET latin1
+BEGIN
+ declare l_ret varchar(14);
+ -- Retirando possiveis formatacoes no valor recebido.
+ set p_cpf = replace(p_cpf,'.','');
+ set p_cpf = replace(p_cpf,'-','');
+ set p_cpf = replace(p_cpf,' ','');
+ set p_cpf = trim(p_cpf);
+ -- Armazenando o valor recebido em uma variavel interna
+ set l_ret = p_cpf;
+ -- Montando a formatacao
+ set l_ret = concat(mid(l_ret,1,3),'.',mid(l_ret,4,3),'.',mid(l_ret,7,3),'-',mid(l_ret,10,2));
+ -- Retornando o resultado
+ return l_ret;
+ END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of function `cpf_validar`
+--
+
+DROP FUNCTION IF EXISTS `cpf_validar`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `cpf_validar`(CPF CHAR(20)) RETURNS double
+BEGIN
+    DECLARE INDICE INT;
+    DECLARE SOMA INT;
+    DECLARE DIG1 INT;
+    DECLARE DIG2 INT;
+    DECLARE CPF_TEMP VARCHAR(11);
+    DECLARE DIGITOS_IGUAIS CHAR(1);
+    DECLARE RESULTADO CHAR(1);
+
+    SET RESULTADO = FALSE;
+
+    /*
+    Verificando se os dígitos são iguais
+    */
+	SET CPF = cpf_converter(CPF);
+    SET CPF_TEMP = SUBSTRING(CPF,1,1);
+
+    SET INDICE = 1;
+    SET DIGITOS_IGUAIS = 'S';
+
+  IF (LENGTH(CPF)>11) THEN
+    SET DIGITOS_IGUAIS = 'S';
+  ELSE
+    SET DIG1=LENGTH(CPF);
+    WHILE (DIG1<=12) DO
+      SET CPF=CONCAT("0",CPF);
+      SET DIG1=DIG1+1;
+    END WHILE;
+    SET CPF=RIGHT(CPF,11);
+      WHILE (INDICE <= 11) DO
+          IF (SUBSTRING(CPF,INDICE,1) <> CPF_TEMP) Then
+              SET DIGITOS_IGUAIS = 'N';
+          END IF;
+          SET INDICE = INDICE + 1;
+      END WHILE;
+  END IF;
+
+    /*Caso os dígitos não sejam todos iguais Começo o calculo do dígitos*/
+    IF (DIGITOS_IGUAIS = 'N') THEN
+        /*Cálculo do 1º dígito*/
+        SET SOMA = 0;
+        SET INDICE = 1;
+        WHILE (INDICE <= 9) DO
+            SET Soma = Soma + CAST(SUBSTRING(CPF,INDICE,1) AS UNSIGNED) * (11 - INDICE);             SET INDICE = INDICE + 1;
+         END WHILE;
+         SET DIG1 = 11 - (SOMA % 11);
+         IF (DIG1 > 9) THEN
+            SET DIG1 = 0;
+         END IF;
+
+        -- Cálculo do 2º dígito }
+        SET SOMA = 0;
+        SET INDICE = 1;
+        WHILE (INDICE <= 10) DO
+             SET Soma = Soma + CAST(SUBSTRING(CPF,INDICE,1) AS UNSIGNED) * (12 - INDICE);              SET INDICE = INDICE + 1;
+        END WHILE;
+        SET DIG2 = 11 - (SOMA % 11);
+        IF DIG2 > 9 THEN
+            SET DIG2 = 0;
+        END IF;
+
+        -- Validando
+        IF (DIG1 = SUBSTRING(CPF,LENGTH(CPF)-1,1)) AND (DIG2 = SUBSTRING(CPF,LENGTH(CPF),1)) THEN
+            SET RESULTADO = TRUE;
+        ELSE
+            SET RESULTADO = FALSE;
+        END IF;
+
+    END IF;
+    RETURN RESULTADO;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of function `data_converter`
+--
+
+DROP FUNCTION IF EXISTS `data_converter`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `data_converter`(p_data varchar(30)) RETURNS date
+BEGIN
+	DECLARE data_retorno date;
+	SET data_retorno = STR_TO_DATE( p_data , '%d/%c/%Y' );
+	RETURN data_retorno;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of function `data_mostrar`
+--
+
+DROP FUNCTION IF EXISTS `data_mostrar`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `data_mostrar`(p_data date) RETURNS varchar(20) CHARSET utf8
+BEGIN
+	DECLARE data_retorno VARCHAR(20);
+	SET data_retorno = DATE_FORMAT( p_data , '%d/%m/%Y' );
+	RETURN data_retorno;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of function `data_validar`
+--
+
+DROP FUNCTION IF EXISTS `data_validar`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `data_validar`(p_data char(40)) RETURNS int(11)
+BEGIN
+DECLARE data_retorno date;
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+	RETURN	0;
+		END;
+
+SET data_retorno = STR_TO_DATE( p_data , '%d/%c/%Y' );
+RETURN 1;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `adicionar_cliente`
+--
+
+DROP PROCEDURE IF EXISTS `adicionar_cliente`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `adicionar_cliente`(
+	IN p_uf      	 VARCHAR(2),
+    IN p_cidade      VARCHAR(100),
+    IN p_cep		 VARCHAR(14),
+	IN p_logradouro	 VARCHAR(15),
+    IN p_num		 VARCHAR(3),
+    IN p_bairro		 VARCHAR(100),
+    IN p_complemento VARCHAR(100),
+	IN p_nome_fun	VARCHAR(100),
+    IN p_sobrenome  VARCHAR(100),
+    IN p_cpf		VARCHAR(14),
+	IN p_data_nasc	VARCHAR(15),
+    IN p_email		VARCHAR(100),
+    IN p_ddd		VARCHAR(4),
+    IN p_telefone   VARCHAR(20),
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_cliente_id INTEGER;
+	DECLARE v_endereco_id    INTEGER;
+    DECLARE v_telefone		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @p_erro_cod = RETURNED_SQLSTATE, @p_erro_msg = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @p_erro_cod;
+			 SET p_erro_msg = @p_erro_msg;
+
+			 INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			 COMMIT;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+        
+	-- --
+
+		IF RTRIM(p_nome_fun) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do Cliente é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+             
+			LEAVE body;
+			
+		ELSEIF LENGTH(RTRIM(p_nome_fun)) > 25 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do Cliente excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+        
+	-- --
+		
+		IF RTRIM(p_sobrenome) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'Sobrenome é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+		ELSEIF LENGTH(RTRIM(p_sobrenome)) > 50 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O sobrenome do Cliente excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+
+	-- --
+
+		IF p_data_nasc IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'A data de nascimento é obrigatória';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+
+			LEAVE body;
+
+		ELSE
+
+			IF DATA_VALIDAR(p_data_nasc) = 0 then
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'A data de nascimento está inválida';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;
+
+				LEAVE body;			
+			END IF;
+
+		END IF;
+        
+	-- --
+		
+        IF RTRIM(p_cpf) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O CPF é obrigatório';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+        ELSE
+        
+			IF CPF_VALIDAR(p_cpf) = FALSE THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O CPF está inválido';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;                
+                
+				LEAVE body; 
+            END IF;
+        END IF;
+            
+    -- --
+    
+		SET v_telefone := REPLACE(p_telefone, '-','');
+        SET v_telefone := REPLACE(p_telefone, '.','');
+        SET v_telefone := REPLACE(p_telefone, '/','');
+    
+		IF RTRIM(p_email) IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_email)) > 75 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O e-mail do Cliente excedeu os caracteres permitidos.';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;                
+                
+				LEAVE body;				
+            END IF;
+            
+		ELSE
+			
+            IF RTRIM(p_email) IS NULL THEN
+				
+                IF RTRIM(p_ddd) IS NULL AND RTRIM(v_telefone) IS NULL THEN
+					SET p_erro_cod  := '90000';
+					SET p_erro_msg := 'Quando o e-mail estiver nulo, o telefone deve ser preenchido';
+                    
+					INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+						VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+						
+					COMMIT;                    
+                    
+					LEAVE body;                
+            
+				ELSE
+            
+					IF LENGTH(RTRIM(p_ddd)) > 2 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O DDD do Cliente excedeu os caracteres permitidos.';
+                        
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+							
+						COMMIT;                        
+                        
+						LEAVE body; 					
+					END IF;
+					
+					IF LENGTH(RTRIM(v_telefone)) > 9 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O Telefone do Cliente excedeu os caracteres permitidos.';
+
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+							
+						COMMIT;                        
+                        
+						LEAVE body;                
+					END IF;
+				
+                END IF;
+                
+            END IF;
+            
+        END IF;
+		
+    -- --
+	
+		IF RTRIM(v_telefone) IS NOT NULL AND RTRIM(p_ddd) IS NOT NULL THEN
+			
+            IF RTRIM(p_email) IS NULL THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'Quando o telefone não for preenchido, o email é obrigatório';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;
+            
+				LEAVE body;            
+            END IF;
+            
+        END IF;
+    
+    -- --
+    
+		IF p_email IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_email)) > 75 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O campo email excedeu os limites de caracteres permitido';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;                
+                
+				LEAVE body;            
+            END IF;
+            
+        END IF;   
+    
+    -- --
+
+		-- Chama proc de endereco
+		CALL adicionar_endereco (
+			p_uf,
+			p_cidade,
+			p_cep,
+			p_logradouro,
+			p_num,		 
+			p_bairro,
+			p_complemento,
+			v_endereco_id,
+			p_erro_cod,
+			p_erro_msg
+		);
+
+		IF p_erro_cod <> '00000' THEN
+			LEAVE body;
+		END IF;
+	-- --
+    
+		SELECT MAX(cliente_id) + 1
+			INTO v_cliente_id
+		FROM cliente;
+
+		INSERT INTO cliente    (cliente_id,
+								 nome,
+                                 sobrenome,
+								 data_nascimento,
+                                 cpf,
+                                 ddd,
+                                 telefone,
+                                 email,
+								 endereco_id,
+                                 flag_maior_idade,
+                                 flag_bloqueado)
+						 VALUES (v_cliente_id,
+								 UPPER(TRIM(p_nome_fun)),
+                                 UPPER(TRIM(p_sobrenome)),
+								 DATA_CONVERTER(p_data_nasc),
+                                 CPF_CONVERTER(p_cpf),
+                                 p_ddd,
+                                 p_telefone,
+                                 LOWER(TRIM(p_email)),
+								 v_endereco_id,
+                                 'S',
+                                 'N');
+                                 
+	-- --
+		
+		COMMIT;
+
+        SET p_erro_cod  := '00000';
+		SET p_erro_msg := 'Cadastro Efetuado com sucesso';
+        
+		INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+			VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+			
+		COMMIT;   
+    -- --
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `adicionar_endereco`
+--
+
+DROP PROCEDURE IF EXISTS `adicionar_endereco`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `adicionar_endereco`(
+	IN p_uf      	 VARCHAR(2),
+    IN p_cidade      VARCHAR(100),
+    IN p_cep		 VARCHAR(14),
+	IN p_logradouro	 VARCHAR(15),
+    IN p_num		 VARCHAR(1),
+    IN p_bairro		 VARCHAR(100),
+    IN p_complemento VARCHAR(4),
+	OUT p_endereco_id BIGINT,
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_funcionario_id INTEGER;
+    DECLARE v_cep    		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @9 = RETURNED_SQLSTATE, @10 = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @9;
+			 SET p_erro_msg = @10;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+		
+	-- --
+		
+		SET v_cep := TRIM(p_cep);
+		SET v_cep := REPLACE(v_cep, '-', '');
+		SET v_cep := REPLACE(v_cep, '/', '');
+		SET v_cep := REPLACE(v_cep, '.', '');
+
+		IF v_cep IS NULL THEN
+			SET p_erro_cod := '90000';
+			SET p_erro_msg := 'CEP é obrigatório';
+			LEAVE body;
+
+		ELSE
+
+			IF LENGTH(v_cep) > 8 THEN
+				SET p_erro_cod := '90000';
+				SET p_erro_msg := 'O CEP está inválido';
+				LEAVE body;
+			END IF;
+
+		END IF;
+
+	-- --
+
+		SELECT MAX(endereco_id) + 1
+			INTO v_funcionario_id
+		FROM endereco;
+
+		INSERT INTO endereco (endereco_id,
+							  cep,
+							  uf,
+							  cidade,
+						      logradouro,
+                              numero,
+                              complemento,
+                              bairro)
+					 VALUES (v_funcionario_id,
+							 v_cep,
+							 p_uf,
+                             p_cidade,
+						     p_logradouro,
+					         p_num,
+                             p_complemento,
+                             p_bairro);
+
+		SET p_erro_cod := '00000';
+		SET p_erro_msg := 'Operação realizada com sucesso';
+		SET p_endereco_id := v_funcionario_id;
+
+	-- --
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `adicionar_funcionario`
+--
+
+DROP PROCEDURE IF EXISTS `adicionar_funcionario`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `adicionar_funcionario`(
+	IN p_uf      	 VARCHAR(2),
+    IN p_cidade      VARCHAR(100),
+    IN p_cep		 VARCHAR(14),
+	IN p_logradouro	 VARCHAR(15),
+    IN p_num		 VARCHAR(3),
+    IN p_bairro		 VARCHAR(100),
+    IN p_complemento VARCHAR(100),
+	IN p_nome_fun	VARCHAR(100),
+    IN p_sobrenome  VARCHAR(100),
+    IN p_cpf		VARCHAR(14),
+	IN p_data_nasc	VARCHAR(15),
+    IN p_ddd		VARCHAR(4),
+    IN p_telefone   VARCHAR(20),
+    IN p_cargo 		VARCHAR(30),
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_funcionario_id INTEGER;
+	DECLARE v_endereco_id    INTEGER;
+    DECLARE v_telefone		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @p_erro_cod = RETURNED_SQLSTATE, @p_erro_msg = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @p_erro_cod;
+			 SET p_erro_msg = @p_erro_msg;
+
+			 INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			 COMMIT;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+        
+	-- --
+
+		IF RTRIM(p_nome_fun) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do Funcionário é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+             
+			LEAVE body;
+			
+		ELSEIF LENGTH(RTRIM(p_nome_fun)) > 25 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do funcionário excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+        
+	-- --
+		
+		IF RTRIM(p_sobrenome) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'Sobrenome é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+		ELSEIF LENGTH(RTRIM(p_sobrenome)) > 50 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O sobrenome do funcionário excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+
+	-- --
+
+		IF p_data_nasc IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'A data de nascimento é obrigatória';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+
+			LEAVE body;
+
+		ELSE
+
+			IF DATA_VALIDAR(p_data_nasc) = 0 then
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'A data de nascimento está inválida';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;
+
+				LEAVE body;			
+			END IF;
+
+		END IF;
+        
+	-- --
+		
+        IF RTRIM(p_cpf) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O CPF é obrigatório';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+        ELSE
+        
+			IF CPF_VALIDAR(p_cpf) = FALSE THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O CPF está inválido';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body; 
+            END IF;
+        END IF;
+            
+    -- --
+    
+		SET v_telefone := REPLACE(p_telefone, '-','');
+        SET v_telefone := REPLACE(p_telefone, '.','');
+        SET v_telefone := REPLACE(p_telefone, '/','');
+    
+		/*IF RTRIM(p_email) IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_email)) > 75 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O e-mail do funcionário excedeu os caracteres permitidos.';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body;				
+            END IF;
+            
+		ELSE
+			
+            IF RTRIM(p_email) IS NULL THEN
+				
+                IF RTRIM(p_ddd) IS NULL AND RTRIM(v_telefone) IS NULL THEN
+					SET p_erro_cod  := '90000';
+					SET p_erro_msg := 'Quando o e-mail estiver nulo, o telefone deve ser preenchido';
+                    
+					INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+						VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+						
+					COMMIT;                    
+                    
+					LEAVE body;                
+            
+				ELSE
+            
+					IF LENGTH(RTRIM(p_ddd)) > 2 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O DDD do funcionário excedeu os caracteres permitidos.';
+                        
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+							
+						COMMIT;                        
+                        
+						LEAVE body; 					
+					END IF;
+					
+					IF LENGTH(RTRIM(v_telefone)) > 9 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O Telefone do funcionário excedeu os caracteres permitidos.';
+
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+							
+						COMMIT;                        
+                        
+						LEAVE body;                
+					END IF;
+				
+                END IF;
+                
+            END IF;
+            
+        END IF;*/
+		
+    -- --
+	
+		/*IF RTRIM(v_telefone) IS NOT NULL AND RTRIM(p_ddd) IS NOT NULL THEN
+			
+            IF RTRIM(p_email) IS NULL THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'Quando o telefone não for preenchido, o email é obrigatório';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;
+            
+				LEAVE body;            
+            END IF;
+            
+        END IF;*/
+    
+    -- --
+    
+		IF p_cargo IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_cargo)) > 30 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O cargo excedeu os limites de caracteres permitido';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body;            
+            END IF;
+            
+        END IF;
+    
+    -- --
+
+		-- Chama proc de endereco
+		CALL adicionar_endereco (
+			p_uf,
+			p_cidade,
+			p_cep,
+			p_logradouro,
+			p_num,		 
+			p_bairro,
+			p_complemento,
+			v_endereco_id,
+			p_erro_cod,
+			p_erro_msg
+		);
+
+		IF p_erro_cod <> '00000' THEN
+			LEAVE body;
+		END IF;
+	-- --
+    
+		SELECT MAX(funcionario_id) + 1
+			INTO v_funcionario_id
+		FROM funcionario;
+    
+		INSERT INTO funcionario (funcionario_id,
+								 nome,
+                                 sobrenome,
+								 data_nascimento,
+                                 cpf,
+                                 ddd,
+                                 telefone,
+                                 cargo,
+								 endereco_id,
+                                 flag_ativo,
+                                 flag_bloqueado)
+						 VALUES (v_funcionario_id,
+								 UPPER(TRIM(p_nome_fun)),
+                                 UPPER(TRIM(p_sobrenome)),
+								 DATA_CONVERTER(p_data_nasc),
+                                 CPF_CONVERTER(p_cpf),
+                                 p_ddd,
+                                 p_telefone,
+                                 p_cargo,
+								 v_endereco_id,
+                                 'S',
+                                 'N');
+                                 
+	-- --
+		
+		COMMIT;
+
+        SET p_erro_cod  := '00000';
+		SET p_erro_msg := 'Cadastro Efetuado com sucesso';
+        
+		INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+			VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+			
+		COMMIT;   
+    -- --
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `atualizar_cliente`
+--
+
+DROP PROCEDURE IF EXISTS `atualizar_cliente`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizar_cliente`(
+	IN p_uf      	 VARCHAR(2),
+    IN p_cidade      VARCHAR(100),
+    IN p_cep		 VARCHAR(14),
+	IN p_logradouro	 VARCHAR(15),
+    IN p_num		 VARCHAR(3),
+    IN p_bairro		 VARCHAR(100),
+    IN p_complemento VARCHAR(100),
+	IN p_nome_fun	VARCHAR(100),
+    IN p_sobrenome  VARCHAR(100),
+    IN p_cpf		VARCHAR(14),
+	IN p_data_nasc	VARCHAR(15),
+    IN p_email		VARCHAR(100),
+    IN p_ddd		VARCHAR(4),
+    IN p_telefone   VARCHAR(20),
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_funcionario_id INTEGER;
+	DECLARE v_endereco_id    INTEGER;
+    DECLARE v_telefone		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @p_erro_cod = RETURNED_SQLSTATE, @p_erro_msg = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @p_erro_cod;
+			 SET p_erro_msg = @p_erro_msg;
+
+			 INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			 COMMIT;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+        
+	-- --
+
+		IF RTRIM(p_nome_fun) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do Funcionário é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+             
+			LEAVE body;
+			
+		ELSEIF LENGTH(RTRIM(p_nome_fun)) > 25 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do funcionário excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+        
+	-- --
+		
+		IF RTRIM(p_sobrenome) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'Sobrenome é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+		ELSEIF LENGTH(RTRIM(p_sobrenome)) > 50 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O sobrenome do funcionário excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+
+	-- --
+
+		IF p_data_nasc IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'A data de nascimento é obrigatória';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+
+			LEAVE body;
+
+		ELSE
+
+			IF DATA_VALIDAR(p_data_nasc) = 0 then
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'A data de nascimento está inválida';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;
+
+				LEAVE body;			
+			END IF;
+
+		END IF;
+        
+	-- --
+
+        IF RTRIM(p_cpf) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O CPF é obrigatório';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+        ELSE
+        
+			IF CPF_VALIDAR(p_cpf) = FALSE THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O CPF está inválido';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;                
+                
+				LEAVE body; 
+            END IF;
+        END IF;
+
+		SELECT COUNT(*)
+			INTO v_qtde
+		FROM cliente
+			WHERE cpf = p_cpf;
+		
+		IF v_qtde = 0 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'CPF não encontrado';
+
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+
+			LEAVE body;
+		END IF;
+            
+    -- --
+    
+		SET v_telefone := REPLACE(p_telefone, '-','');
+        SET v_telefone := REPLACE(p_telefone, '.','');
+        SET v_telefone := REPLACE(p_telefone, '/','');
+    
+		IF RTRIM(p_email) IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_email)) > 75 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O e-mail do funcionário excedeu os caracteres permitidos.';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;                
+                
+				LEAVE body;				
+            END IF;
+            
+		ELSE
+			
+            IF RTRIM(p_email) IS NULL THEN
+				
+                IF RTRIM(p_ddd) IS NULL AND RTRIM(v_telefone) IS NULL THEN
+					SET p_erro_cod  := '90000';
+					SET p_erro_msg := 'Quando o e-mail estiver nulo, o telefone deve ser preenchido';
+                    
+					INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+						VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+						
+					COMMIT;                    
+                    
+					LEAVE body;                
+            
+				ELSE
+            
+					IF LENGTH(RTRIM(p_ddd)) > 2 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O DDD do funcionário excedeu os caracteres permitidos.';
+                        
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+							
+						COMMIT;                        
+                        
+						LEAVE body; 					
+					END IF;
+					
+					IF LENGTH(RTRIM(v_telefone)) > 9 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O Telefone do funcionário excedeu os caracteres permitidos.';
+
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+							
+						COMMIT;                        
+                        
+						LEAVE body;                
+					END IF;
+				
+                END IF;
+                
+            END IF;
+            
+        END IF;
+		
+    -- --
+    
+		IF RTRIM(v_telefone) IS NOT NULL AND RTRIM(p_ddd) IS NOT NULL THEN
+			
+            IF RTRIM(p_email) IS NULL THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'Quando o telefone não for preenchido, o email é obrigatório';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;
+            
+				LEAVE body;            
+            END IF;
+            
+        END IF;
+
+    -- --
+		
+		SELECT cliente_id
+			INTO v_funcionario_id
+		FROM cliente
+			WHERE cpf = p_cpf;
+
+		-- Recupera o Endereco ID do funcionario
+		SELECT endereco_id
+			INTO v_endereco_id
+		FROM cliente
+			WHERE cliente_id = v_funcionario_id;
+	
+	-- --
+
+		-- Chama proc de endereco
+		UPDATE endereco
+			SET uf =p_uf,
+				cidade = p_cidade,
+			    cep = p_cep,
+			    logradouro = p_logradouro,
+				numero = p_num,		 
+			    bairro = p_bairro,
+			    complemento = p_complemento
+		WHERE endereco_id = v_endereco_id;
+
+	-- --
+    
+		UPDATE cliente 
+			 SET nome = UPPER(TRIM(p_nome_fun)),
+				 sobrenome = UPPER(TRIM(p_sobrenome)),
+				 data_nascimento = DATA_CONVERTER(p_data_nasc),
+				 cpf = CPF_CONVERTER(p_cpf),
+				 email = LOWER(TRIM(p_email)),
+				 ddd = p_ddd,
+				 telefone = p_telefone
+		WHERE cliente_id = v_funcionario_id;
+                                 
+	-- --
+		
+		COMMIT;
+
+        SET p_erro_cod  := '00000';
+		SET p_erro_msg := 'Atualização Efetuada com sucesso';
+        
+		INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+			VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+			
+		COMMIT;   
+    -- --
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `atualizar_funcionario`
+--
+
+DROP PROCEDURE IF EXISTS `atualizar_funcionario`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizar_funcionario`(
+	IN p_uf      	 VARCHAR(2),
+    IN p_cidade      VARCHAR(100),
+    IN p_cep		 VARCHAR(14),
+	IN p_logradouro	 VARCHAR(15),
+    IN p_num		 VARCHAR(3),
+    IN p_bairro		 VARCHAR(100),
+    IN p_complemento VARCHAR(100),
+	IN p_nome_fun	VARCHAR(100),
+    IN p_sobrenome  VARCHAR(100),
+    IN p_cpf		VARCHAR(14),
+	IN p_data_nasc	VARCHAR(15),
+    IN p_ddd		VARCHAR(4),
+    IN p_telefone   VARCHAR(20),
+    IN p_cargo 		VARCHAR(30),
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_funcionario_id INTEGER;
+	DECLARE v_endereco_id    INTEGER;
+    DECLARE v_telefone		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @p_erro_cod = RETURNED_SQLSTATE, @p_erro_msg = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @p_erro_cod;
+			 SET p_erro_msg = @p_erro_msg;
+
+			 INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			 COMMIT;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+        
+	-- --
+
+		IF RTRIM(p_nome_fun) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do Funcionário é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+             
+			LEAVE body;
+			
+		ELSEIF LENGTH(RTRIM(p_nome_fun)) > 25 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O nome do funcionário excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+        
+	-- --
+		
+		IF RTRIM(p_sobrenome) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'Sobrenome é obrigatório';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+		ELSEIF LENGTH(RTRIM(p_sobrenome)) > 50 THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O sobrenome do funcionário excedeu os caracteres permitidos.';
+            
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		END IF;
+
+	-- --
+
+		IF p_data_nasc IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'A data de nascimento é obrigatória';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+
+			LEAVE body;
+
+		ELSE
+
+			IF DATA_VALIDAR(p_data_nasc) = 0 then
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'A data de nascimento está inválida';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;
+
+				LEAVE body;			
+			END IF;
+
+		END IF;
+        
+	-- --
+		
+        IF RTRIM(p_cpf) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O CPF é obrigatório';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+        ELSE
+        
+			IF CPF_VALIDAR(p_cpf) = FALSE THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O CPF está inválido';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body; 
+            END IF;
+        END IF;
+            
+    -- --
+
+		SET v_telefone := REPLACE(p_telefone, '-','');
+        SET v_telefone := REPLACE(p_telefone, '.','');
+        SET v_telefone := REPLACE(p_telefone, '/','');
+
+		/*IF RTRIM(p_email) IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_email)) > 75 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O e-mail do funcionário excedeu os caracteres permitidos.';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body;				
+            END IF;
+            
+		ELSE
+			
+            IF RTRIM(p_email) IS NULL THEN
+				
+                IF RTRIM(p_ddd) IS NULL AND RTRIM(v_telefone) IS NULL THEN
+					SET p_erro_cod  := '90000';
+					SET p_erro_msg := 'Quando o e-mail estiver nulo, o telefone deve ser preenchido';
+                    
+					INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+						VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+						
+					COMMIT;                    
+                    
+					LEAVE body;                
+            
+				ELSE
+            
+					IF LENGTH(RTRIM(p_ddd)) > 2 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O DDD do funcionário excedeu os caracteres permitidos.';
+                        
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+							
+						COMMIT;                        
+                        
+						LEAVE body; 					
+					END IF;
+					
+					IF LENGTH(RTRIM(v_telefone)) > 9 THEN
+						SET p_erro_cod  := '90000';
+						SET p_erro_msg := 'O Telefone do funcionário excedeu os caracteres permitidos.';
+
+						INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+							VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+							
+						COMMIT;                        
+                        
+						LEAVE body;                
+					END IF;
+				
+                END IF;
+                
+            END IF;
+            
+        END IF;
+		
+    -- --
+    
+		IF RTRIM(v_telefone) IS NOT NULL AND RTRIM(p_ddd) IS NOT NULL THEN
+			
+            IF RTRIM(p_email) IS NULL THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'Quando o telefone não for preenchido, o email é obrigatório';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;
+            
+				LEAVE body;            
+            END IF;
+            
+        END IF;*/
+    
+    -- --
+    
+		IF p_cargo IS NOT NULL THEN
+			
+            IF LENGTH(RTRIM(p_cargo)) > 30 THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O cargo excedeu os limites de caracteres permitido';
+                
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body;            
+            END IF;
+            
+        END IF;
+    
+    -- --
+
+		SELECT funcionario_id
+			INTO v_funcionario_id
+		FROM funcionario
+			WHERE cpf = p_cpf;
+
+		-- Recupera o Endereco ID do funcionario
+		SELECT endereco_id
+			INTO v_endereco_id
+		FROM funcionario
+			WHERE funcionario_id = v_funcionario_id;
+	
+	-- --
+
+		-- Chama proc de endereco
+		UPDATE endereco
+			SET uf =p_uf,
+				cidade = p_cidade,
+			    cep = p_cep,
+			    logradouro = p_logradouro,
+				numero = p_num,		 
+			    bairro = p_bairro,
+			    complemento = p_complemento
+		WHERE endereco_id = v_endereco_id;
+
+	-- --
+    
+		UPDATE funcionario 
+			 SET nome = UPPER(TRIM(p_nome_fun)),
+				 sobrenome = UPPER(TRIM(p_sobrenome)),
+				 data_nascimento = DATA_CONVERTER(p_data_nasc),
+				 cpf = CPF_CONVERTER(p_cpf),
+				 ddd = p_ddd,
+				 telefone = p_telefone,
+				 cargo = p_cargo
+		WHERE funcionario_id = v_funcionario_id;
+                                 
+	-- --
+		
+		COMMIT;
+
+        SET p_erro_cod  := '00000';
+		SET p_erro_msg := 'Atualização Efetuada com sucesso';
+        
+		INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+			VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+			
+		COMMIT;   
+    -- --
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `chamada`
+--
+
+DROP PROCEDURE IF EXISTS `chamada`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `chamada`( out erro varchar(200), out erro1 varchar(200), out erro2 varchar(200))
+BEGIN
+	declare v int;
+	
+	set v := 1;
+if v = 1 then
+set erro := 'ola';
+set erro1 := 's';
+set erro2 := 'sd';
+end if;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `excluir_cliente`
+--
+
+DROP PROCEDURE IF EXISTS `excluir_cliente`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `excluir_cliente`(
+    IN p_cpf		VARCHAR(14),
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_funcionario_id INTEGER;
+	DECLARE v_endereco_id    INTEGER;
+    DECLARE v_telefone		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @p_erro_cod = RETURNED_SQLSTATE, @p_erro_msg = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @p_erro_cod;
+			 SET p_erro_msg = @p_erro_msg;
+
+			 INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			 COMMIT;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+
+        IF RTRIM(p_cpf) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O CPF é obrigatório';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+        ELSE
+        
+			IF CPF_VALIDAR(p_cpf) = FALSE THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O CPF está inválido';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'CLIENTE');
+					
+				COMMIT;                
+                
+				LEAVE body; 
+            END IF;
+        END IF;
+
+	-- --
+	
+		-- Recupera funcionario id
+		SELECT cliente_id
+			INTO v_funcionario_id
+		FROM cliente
+			WHERE cpf = p_cpf;
+
+	-- --
+
+		DELETE FROM cliente
+			WHERE cliente_id = v_funcionario_id;
+
+	-- --
+
+		COMMIT;
+		
+		SET p_erro_cod := '00000';
+		SET p_erro_msg := 'Exlusão Realizada com Sucesso';
+
+	-- --
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `excluir_funcionario`
+--
+
+DROP PROCEDURE IF EXISTS `excluir_funcionario`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `excluir_funcionario`(
+    IN p_cpf		VARCHAR(14),
+	OUT p_erro_cod  VARCHAR(500),
+	OUT p_erro_msg  VARCHAR(500)
+)
+body:BEGIN
+	DECLARE v_qtde 			 INTEGER;
+    DECLARE v_funcionario_id INTEGER;
+	DECLARE v_endereco_id    INTEGER;
+    DECLARE v_telefone		 VARCHAR(20);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+
+			 GET DIAGNOSTICS CONDITION 1
+		  	 @p_erro_cod = RETURNED_SQLSTATE, @p_erro_msg = MESSAGE_TEXT;
+
+			 SET p_erro_cod  = @p_erro_cod;
+			 SET p_erro_msg = @p_erro_msg;
+
+			 INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			 COMMIT;
+		END;
+        
+	-- --
+		
+		START TRANSACTION;
+
+        IF RTRIM(p_cpf) IS NULL THEN
+			SET p_erro_cod  := '90000';
+			SET p_erro_msg := 'O CPF é obrigatório';
+
+			INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+				VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+                
+			COMMIT;
+            
+			LEAVE body;
+		
+        ELSE
+        
+			IF CPF_VALIDAR(p_cpf) = FALSE THEN
+				SET p_erro_cod  := '90000';
+				SET p_erro_msg := 'O CPF está inválido';
+
+				INSERT INTO log_erro (cod_erro, desc_erro, data_log, tipo)
+					VALUES (p_erro_cod, p_erro_msg, NOW(), 'FUNCIONARIO');
+					
+				COMMIT;                
+                
+				LEAVE body; 
+            END IF;
+        END IF;
+
+	-- --
+	
+		-- Recupera funcionario id
+		SELECT funcionario_id
+			INTO v_funcionario_id
+		FROM funcionario
+			WHERE cpf = p_cpf;
+
+	-- --
+
+		DELETE FROM funcionario
+			WHERE funcionario_id = v_funcionario_id;
+
+	-- --
+
+		COMMIT;
+		
+		SET p_erro_cod := '00000';
+		SET p_erro_msg := 'Exlusão Realizada com Sucesso';
+
+	-- --
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

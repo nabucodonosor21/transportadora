@@ -89,14 +89,32 @@ public class FuncionarioController implements Initializable {
 
 	@FXML
 	public void actionSalvar(final ActionEvent arg0) {
-		 String salvar = dao.salvar(txt_cpf.getText(), txt_nome.getText(),
-		 txt_sobrenome.getText(), txt_data_nasc.getText(), txt_ddd.getText(),
-		 txt_telefone.getText(), txt_email.getText(),
-		 txt_uf.getText(), txt_cidade.getText(), txt_cep.getText(),
-		 txt_logradouro.getText(), txt_num.getText(), txt_bairro.getText(),
-		 txt_complemento.getText());
+		
+		FuncionarioDTO funDTO = populateFuncionarioDTO();
+		String retorno = dao.salvar(funDTO);
+		
+		Util.imprimeMsg(retorno);
+		
+	}
 
-		 Util.imprimeMsg(salvar);
+	private FuncionarioDTO populateFuncionarioDTO() {
+		
+		funDTO = new FuncionarioDTO(txt_telefone.getText(), 
+				txt_data_nasc.getText(), 
+				txt_complemento.getText(), 
+				txt_cep.getText(), 
+				txt_nome.getText(), 
+				txt_email.getText(), 
+				txt_bairro.getText(), 
+				txt_cpf.getText(), 
+				txt_logradouro.getText(), 
+				txt_ddd.getText(), 
+				txt_sobrenome.getText(), 
+				txt_num.getText(), 
+				txt_uf.getText(), 
+				txt_cidade.getText());
+				
+		return funDTO;
 	}
 
 	public void actionExcluir(final ActionEvent arg0) {
@@ -119,5 +137,6 @@ public class FuncionarioController implements Initializable {
 	public void actionVoltar(final ActionEvent arg0) {
 		Util.redirecionaChild("view/contentPrincipal.fxml");
 	}
+
 
 }

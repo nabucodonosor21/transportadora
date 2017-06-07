@@ -9,6 +9,7 @@ import br.com.transportadora.conf.ConexaoBD;
 import br.com.transportadora.App;
 import br.com.transportadora.conf.ConexaoBD;
 import br.com.transportadora.dao.ClienteDAO;
+import br.com.transportadora.dto.FuncionarioDTO;
 import br.com.transportadora.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,7 +66,7 @@ public class ClienteController implements Initializable{
 	
 	private ClienteDAO dao;
 	
-	//private ClienteDTO funDTO;
+//	private ClienteDTO cliDTO;
 
 	private Connection conn;
 
