@@ -78,12 +78,10 @@ public class FuncionarioController implements Initializable {
 	}
 
 	public void actionConsultar(final ActionEvent arg0) {
-		funDTO = dao.consultar("555");
-		populaTabelaFunc(funDTO);
-	}
-
-	private void populaTabelaFunc(FuncionarioDTO funDTO2) {
-		txt_cpf.setText(funDTO2.getTxt_cpf());
+		FuncionarioDTO funDTO = populateFuncionarioDTO();
+		FuncionarioDTO retornoDTO = dao.consultarCpf(funDTO.getTxt_cpf());
+		
+		populateFormulario(retornoDTO);
 		
 	}
 
@@ -96,6 +94,8 @@ public class FuncionarioController implements Initializable {
 		Util.imprimeMsg(retorno);
 		
 	}
+	
+	
 
 	private FuncionarioDTO populateFuncionarioDTO() {
 		
@@ -114,6 +114,25 @@ public class FuncionarioController implements Initializable {
 				txt_uf.getText(), 
 				txt_cidade.getText());
 				
+		return funDTO;
+	}
+	
+	private FuncionarioDTO populateFormulario(FuncionarioDTO dto) {
+		txt_telefone.setText(dto.getTxt_telefone()); 
+		txt_data_nasc.setText(dto.getTxt_data_nasc());
+		txt_complemento.setText(dto.getTxt_complemento());
+		txt_cep.setText(dto.getTxt_cep());
+		txt_nome.setText(dto.getTxt_nome());
+		txt_email.setText(dto.getTxt_email()); 
+		txt_bairro.setText(dto.getTxt_bairro()); 
+		txt_cpf.setText(dto.getTxt_cpf());
+		txt_logradouro.setText(dto.getTxt_logradouro());
+		txt_ddd.setText(dto.getTxt_ddd()); 
+		txt_sobrenome.setText(dto.getTxt_sobrenome()); 
+		txt_num.setText(dto.getTxt_num()); 
+		txt_uf.setText(dto.getTxt_uf()); 
+		txt_cidade.setText(dto.getTxt_cidade());
+		
 		return funDTO;
 	}
 

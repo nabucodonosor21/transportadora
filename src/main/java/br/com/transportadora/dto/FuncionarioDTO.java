@@ -51,6 +51,10 @@ public class FuncionarioDTO {
 		this.txt_cidade = txt_cidade;
 	}
 
+	public FuncionarioDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getTxt_telefone() {
 		return txt_telefone;
 	}

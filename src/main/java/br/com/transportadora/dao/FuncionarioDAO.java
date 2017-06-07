@@ -41,17 +41,21 @@ public class FuncionarioDAO {
 
 
 
-	public FuncionarioDTO consultar(String cpf) {
+	public FuncionarioDTO consultarCpf(String cpf) {
 
 		try {
 			statement = conexao.createStatement();
 
-			String sql = "SELECT id, first, last, age FROM Registration";
+			String sql = "SELECT * FROM funcionario where cpf like '"+cpf+"';";
 			ResultSet rs = statement.executeQuery(sql);
 			// STEP 5: Extract data from result set
 			while (rs.next()) {
 				// Retrieve by column name
+				
+				funDTO = new FuncionarioDTO();
 				funDTO.setTxt_cep(rs.getString("cpf"));
+				
+				/*preencher com os demais*/
 
 			}
 			rs.close();
