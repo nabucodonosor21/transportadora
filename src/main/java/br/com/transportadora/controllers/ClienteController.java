@@ -5,15 +5,15 @@ import java.sql.Connection;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
-
+import br.com.transportadora.conf.ConexaoBD;
 import br.com.transportadora.App;
 import br.com.transportadora.conf.ConexaoBD;
+import br.com.transportadora.dao.ClienteDAO;
 import br.com.transportadora.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
@@ -58,14 +58,21 @@ public class ClienteController implements Initializable{
 	private TextField txt_num;
 	
 	@FXML
-	private ChoiceBox<String> combo_uf;
+	private TextField txt_uf;
 	
 	@FXML
-	private ChoiceBox<String> combo_cidade;
+	private TextField txt_cidade;
 	
-	@Override
+	private ClienteDAO dao;
+	
+	//private ClienteDTO funDTO;
+
+	private Connection conn;
+
+	
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		conn = new ConexaoBD().connect();
+		dao = new ClienteDAO(conn);		
 	}
 	
 	public void actionLimpar(final ActionEvent arg0){
@@ -77,15 +84,31 @@ public class ClienteController implements Initializable{
 	}	
 
 	public void actionSalvar(final ActionEvent arg0){
-		
+		 String salvar = dao.salvar(txt_cpf.getText(), txt_nome.getText(),
+		 txt_sobrenome.getText(), txt_data_nasc.getText(), txt_ddd.getText(),
+		 txt_telefone.getText(), txt_email.getText(),
+		 txt_uf.getText(), txt_cidade.getText(), txt_cep.getText(),
+		 txt_logradouro.getText(), txt_num.getText(), txt_bairro.getText(),
+		 txt_complemento.getText());
+		 
+		 Util.imprimeMsg(salvar);
 	}	
 	
 	public void actionExcluir(final ActionEvent arg0){
+		String excluir = dao.excluir(txt_cpf.getText());
 
+		Util.imprimeMsg(excluir);
 	}
 	
 	public void actionAtualizar(final ActionEvent arg0){
-		
+		 String atualizar = dao.atualizar(txt_cpf.getText(), txt_nome.getText(),
+		 txt_sobrenome.getText(), txt_data_nasc.getText(), txt_ddd.getText(),
+		 txt_telefone.getText(), txt_email.getText(),
+		 txt_uf.getText(), txt_cidade.getText(), txt_cep.getText(),
+		 txt_logradouro.getText(), txt_num.getText(), txt_bairro.getText(),
+		 txt_complemento.getText());
+		 
+		 Util.imprimeMsg(atualizar);		
 	}
 
 	public void actionVoltar(final ActionEvent arg0){

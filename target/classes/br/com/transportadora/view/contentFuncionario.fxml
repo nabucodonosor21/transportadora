@@ -38,11 +38,11 @@
             </Label>
             <Separator layoutX="21.0" layoutY="162.0" prefHeight="3.0" prefWidth="809.0" />
             <Label layoutX="26.0" layoutY="209.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="UF" />
-            <ChoiceBox id="combo_uf" fx:id="combo_uf" layoutX="26.0" layoutY="226.0" prefHeight="25.0" prefWidth="83.0" />
+            <TextField id="txt_uf" fx:id="txt_uf" layoutX="26.0" layoutY="226.0" prefHeight="25.0" prefWidth="83.0" />
             <Label layoutX="132.0" layoutY="209.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Cidade" />
-            <ChoiceBox id="combo_cidade" fx:id="combo_cidade" layoutX="132.0" layoutY="226.0" prefHeight="25.0" prefWidth="230.0" />
+            <TextField id="txt_cidade" fx:id="txt_cidade" layoutX="132.0" layoutY="226.0" prefHeight="25.0" prefWidth="230.0" />
             <Label layoutX="388.0" layoutY="209.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="CEP" />
-            <TextField id="txt_cep" fx:id="combo_email" layoutX="388.0" layoutY="226.0" prefHeight="25.0" prefWidth="213.0" />
+            <TextField id="txt_cep" fx:id="txt_cep" layoutX="388.0" layoutY="226.0" prefHeight="25.0" prefWidth="213.0" />
             <Label layoutX="31.0" layoutY="266.0" prefHeight="17.0" prefWidth="71.0" style="-fx-background-color: #FFFFFF;" text="Logradouro" />
             <TextField id="txt_logradouro" fx:id="txt_logradouro" layoutX="28.0" layoutY="283.0" prefHeight="25.0" prefWidth="187.0" />
             <Label layoutX="236.0" layoutY="266.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nº" />

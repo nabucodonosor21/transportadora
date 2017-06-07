@@ -7,6 +7,7 @@ import br.com.transportadora.controllers.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -48,9 +49,11 @@ public class Util {
 		return null;
 	}
 
-	public static void imprimeMsg(String excluir) {
-		// TODO Auto-generated method stub
-		
+	public static void imprimeMsg(String msg) {
+		Alert dialogoErro = new Alert(Alert.AlertType.WARNING);
+		dialogoErro.setTitle("Alerta");
+		dialogoErro.setHeaderText("Aviso");
+		dialogoErro.setContentText(msg);
+		dialogoErro.showAndWait();
 	}
-
 }

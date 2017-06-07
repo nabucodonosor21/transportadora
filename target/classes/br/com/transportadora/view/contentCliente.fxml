@@ -30,10 +30,10 @@
       <Button id="btn_atualizar" layoutX="689.0" onAction="#actionAtualizar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Atualizar" />
       <Label layoutX="447.0" layoutY="264.0" prefHeight="17.0" prefWidth="83.0" style="-fx-background-color: #FFFFFF;" text="Complemento" />
       <Button id="btn_consultar" layoutX="510.0" onAction="#actionConsultar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Consultar" />
-      <TextField id="txt_cep" fx:id="combo_email" layoutX="388.0" layoutY="226.0" prefHeight="25.0" prefWidth="213.0" />
+      <TextField id="txt_cep" fx:id="txt_cep" layoutX="388.0" layoutY="226.0" prefHeight="25.0" prefWidth="213.0" />
       <TextField id="txt_nome" fx:id="txt_nome" layoutX="204.0" layoutY="72.0" prefHeight="25.0" prefWidth="280.0" />
       <Label layoutX="17.0" layoutY="55.0" prefHeight="17.0" prefWidth="43.0" style="-fx-background-color: #FFFFFF;" text="CPF" />
-      <ChoiceBox id="combo_cidade" fx:id="combo_cidade" layoutX="132.0" layoutY="226.0" prefHeight="25.0" prefWidth="230.0" />
+      <TextField id="txt_cidade" fx:id="txt_cidade" layoutX="132.0" layoutY="226.0" prefHeight="25.0" prefWidth="230.0" />
       <Label layoutX="236.0" layoutY="266.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Nº" />
       <Label layoutX="132.0" layoutY="209.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Cidade" />
       <TextField id="txt_email" fx:id="txt_email" layoutX="468.0" layoutY="124.0" prefHeight="25.0" prefWidth="293.0" />
@@ -50,9 +50,9 @@
       <TextField fx:id="txt_cpf" layoutX="17.0" layoutY="72.0" prefHeight="25.0" prefWidth="168.0" />
       <Separator layoutX="10.0" layoutY="373.0" prefHeight="2.0" prefWidth="841.0" />
       <Label layoutX="19.0" layoutY="107.0" prefHeight="17.0" prefWidth="117.0" style="-fx-background-color: #FFFFFF;" text="Data de Nascimento" />
-      <ChoiceBox id="combo_uf" fx:id="combo_uf" layoutX="26.0" layoutY="226.0" prefHeight="25.0" prefWidth="83.0" />
+      <TextField id="txt_uf" fx:id="txt_uf" layoutX="26.0" layoutY="226.0" prefHeight="25.0" prefWidth="83.0" />
       <TextField id="txt_logradouro" fx:id="txt_logradouro" layoutX="28.0" layoutY="283.0" prefHeight="25.0" prefWidth="187.0" />
-      <Button id="btn_excluir" layoutX="600.0" onAction="#actionSalvar" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Excluir" />
+      <Button id="btn_excluir" layoutX="600.0" onAction="#actionExcluir" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Excluir" />
       <TextField id="txt_num" fx:id="txt_num" layoutX="236.0" layoutY="283.0" prefHeight="25.0" prefWidth="44.0" />
       <Label layoutX="297.0" layoutY="264.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="Bairro" />
       <Label layoutX="466.0" layoutY="107.0" prefHeight="17.0" prefWidth="37.0" style="-fx-background-color: #FFFFFF;" text="E-mail" />

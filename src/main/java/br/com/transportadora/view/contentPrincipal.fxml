@@ -9,7 +9,7 @@
    <children>
       <Pane prefHeight="377.0" prefWidth="860.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
-            <Button id="btn_funcionario" layoutX="54.0" layoutY="62.0" mnemonicParsing="false" onAction="#actionFuncionario" text="Funcionário" prefHeight="25.0" prefWidth="77.0"/>
+            <Button id="btn_funcionario" layoutX="58.0" layoutY="62.0" mnemonicParsing="false" onAction="#actionFuncionario" text="Funcionario" prefHeight="25.0" prefWidth="80.0"/>
             <Label layoutX="20.0" layoutY="14.0" text="Menu" textFill="#676767">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -17,10 +17,10 @@
             </Label>
             <Separator layoutX="197.0" orientation="VERTICAL" prefHeight="360.0" prefWidth="4.0" />
             <Separator layoutY="362.0" prefHeight="0.0" prefWidth="860.0" />
-            <Button id="btn_cliente" layoutX="54.0" layoutY="99.0" mnemonicParsing="false" onAction="#actionCliente" prefHeight="25.0" prefWidth="77.0" text="Cliente" />
-            <Button id="btn_veiculo" layoutX="55.0" layoutY="139.0" mnemonicParsing="false" onAction="#actionVeiculo" prefHeight="25.0" prefWidth="76.0" text="Veículo" />
-            <Button id="btn_servico" layoutX="55.0" layoutY="180.0" mnemonicParsing="false" onAction="#actionServico" prefHeight="25.0" prefWidth="78.0" text="Serviço" />
-            <Button id="btn_sair" layoutX="55.0" layoutY="325.0" mnemonicParsing="false" onAction="#actionSair" prefHeight="25.0" prefWidth="79.0" text="Sair" />
+            <Button id="btn_cliente" layoutX="58.0" layoutY="99.0" mnemonicParsing="false" onAction="#actionCliente" prefHeight="25.0" prefWidth="80.0" text="Cliente" />
+            <Button id="btn_veiculo" layoutX="58.0" layoutY="139.0" mnemonicParsing="false" onAction="#actionVeiculo" prefHeight="25.0" prefWidth="80.0" text="Veículo" />
+            <Button id="btn_servico" layoutX="58.0" layoutY="180.0" mnemonicParsing="false" onAction="#actionServico" prefHeight="25.0" prefWidth="80.0" text="Serviço" />
+            <Button id="btn_sair" layoutX="58.0" layoutY="325.0" mnemonicParsing="false" onAction="#actionSair" prefHeight="25.0" prefWidth="80.0" text="Sair" />
          </children>
       </Pane>
    </children>

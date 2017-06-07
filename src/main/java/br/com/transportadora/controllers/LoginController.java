@@ -27,7 +27,6 @@ public class LoginController implements Initializable{
 	@FXML
 	private PasswordField senha;
 
-	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
 	}

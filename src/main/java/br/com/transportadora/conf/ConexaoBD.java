@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 public class ConexaoBD {
 
 	private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DATABASE_URL = "jdbc:mysql://192.168.25.9:3310/teste_trans";
+	private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/transportadora";
 	private static final String USERNAME = "root";
-	private static final String PASSWORD = "root";
+	private static final String PASSWORD = "";
 	
 	private Connection connection;
 	
